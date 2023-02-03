@@ -2,14 +2,15 @@ package com.ecommerce.productservices.model;
 
 public class AddCategoryRequest {
     private String categoryName;
-    private String categoryDesc;
+    private String categoryDescription;
 
     public AddCategoryRequest() {
+
     }
 
-    public AddCategoryRequest(String categoryName, String categoryDesc) {
+    public AddCategoryRequest(String categoryName, String categoryDescription) {
         this.categoryName = categoryName;
-        this.categoryDesc = categoryDesc;
+        this.categoryDescription = categoryDescription;
     }
 
     public String getCategoryName() {
@@ -20,11 +21,11 @@ public class AddCategoryRequest {
         this.categoryName = categoryName;
     }
 
-    public String getCategoryDesc() {
-        return categoryDesc;
+    public String getCategoryDescription() {
+        return categoryDescription;
     }
 
-    public void setCategoryDesc(String categoryDesc) {
-        this.categoryDesc = categoryDesc;
+    public void setCategoryDescription(String categoryDescription) {
+        this.categoryDescription = categoryDescription;
     }
 }

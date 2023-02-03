@@ -7,6 +7,8 @@ import com.ecommerce.productservices.model.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -15,8 +17,18 @@ public class CategoryService {
     private CategoryDAO categoryDAO;
 
     public Category addCategory(AddCategoryRequest addCategoryRequest) {
-        CategoryDTO categoryDTO = new CategoryDTO(addCategoryRequest.getCategoryName(), addCategoryRequest.getCategoryDesc());
+        CategoryDTO categoryDTO = new CategoryDTO(addCategoryRequest.getCategoryName(), addCategoryRequest.getCategoryDescription());
         categoryDTO = categoryDAO.save(categoryDTO);
         return new Category(categoryDTO.getId(), categoryDTO.getCategoryName(), categoryDTO.getCategoryDescription());
+    }
+
+
+    public List<Category> listCategories() {
+        List<CategoryDTO> categoryDTOs = categoryDAO.findAll();
+        List<Category> categories = new ArrayList<>();
+        for (CategoryDTO categoryDTO : categoryDTOs) {
+            categories.add(new Category(categoryDTO.getId(),categoryDTO.getCategoryName(),categoryDTO.getCategoryDescription()));
+        }
+        return categories;
     }
 }
