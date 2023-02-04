@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -30,5 +31,16 @@ public class CategoryService {
             categories.add(new Category(categoryDTO.getId(),categoryDTO.getCategoryName(),categoryDTO.getCategoryDescription()));
         }
         return categories;
+    }
+
+    public Category getCategoryById(Long id) {
+        Optional<CategoryDTO> optionalCategoryDTO = categoryDAO.findById(id);
+        if (optionalCategoryDTO.isPresent()) {
+            CategoryDTO categoryDTO = optionalCategoryDTO.get();
+            Category category = new Category(categoryDTO.getId(),categoryDTO.getCategoryName(),categoryDTO.getCategoryDescription());
+            return category;
+        } else {
+            return new Category();
+        }
     }
 }
