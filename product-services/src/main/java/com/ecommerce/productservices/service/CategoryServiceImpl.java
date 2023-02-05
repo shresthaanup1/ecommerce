@@ -42,4 +42,10 @@ public class CategoryServiceImpl implements CategoryService {
             return new Category();
         }
     }
+
+    @Override
+    public void deleteCategoryById(Long id) {
+        categoryDAO.deleteById(id);
+    }
+
 }

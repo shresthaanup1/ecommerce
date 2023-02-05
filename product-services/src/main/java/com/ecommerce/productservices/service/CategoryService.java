@@ -9,4 +9,6 @@ public interface CategoryService {
      Category addCategory(AddCategoryRequest addCategoryRequest);
      List<Category> listCategories();
      Category getCategoryById(Long id);
+
+     void deleteCategoryById(Long id);
 }
