@@ -4,6 +4,7 @@ import com.ecommerce.productservices.dao.CategoryDAO;
 import com.ecommerce.productservices.dto.CategoryDTO;
 import com.ecommerce.productservices.model.AddCategoryRequest;
 import com.ecommerce.productservices.model.Category;
+import com.ecommerce.productservices.model.UpdateCategoryRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,5 +48,22 @@ public class CategoryServiceImpl implements CategoryService {
     public void deleteCategoryById(Long id) {
         categoryDAO.deleteById(id);
     }
+
+    @Override
+    public Category updateCategory(UpdateCategoryRequest updateCategoryRequest) {
+       Optional<CategoryDTO> optionalCategoryDTO = categoryDAO.findById(updateCategoryRequest.getId());
+        if (optionalCategoryDTO.isPresent()) {
+            CategoryDTO categoryDTO = optionalCategoryDTO.get();
+            categoryDTO.setCategoryName(updateCategoryRequest.getCategoryName());
+            categoryDTO.setCategoryDescription(updateCategoryRequest.getCategoryDescription());
+            categoryDTO = categoryDAO.save(categoryDTO);
+            Category category = new Category(categoryDTO.getId(),categoryDTO.getCategoryName(), categoryDTO.getCategoryDescription());
+            return category;
+        }
+        else {
+            return new Category();
+        }
+    }
+
 
 }

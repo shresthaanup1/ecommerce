@@ -2,6 +2,7 @@ package com.ecommerce.productservices.controller;
 
 import com.ecommerce.productservices.model.AddCategoryRequest;
 import com.ecommerce.productservices.model.Category;
+import com.ecommerce.productservices.model.UpdateCategoryRequest;
 import com.ecommerce.productservices.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,10 +41,15 @@ public class CategoryController {
     public ResponseEntity<Category> getCategoryById(@PathVariable Long id) {
         return new ResponseEntity<>(categoryService.getCategoryById(id), HttpStatus.FOUND);
     }
-   
+
     @DeleteMapping(value = "/category/{id}")
     public ResponseEntity<HttpStatus> deleteCategoryById(@PathVariable Long id) {
         categoryService.deleteCategoryById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping(value = "/category")
+    public ResponseEntity<Category> updateCategory(@RequestBody UpdateCategoryRequest updateCategoryRequest) {
+        return new ResponseEntity<>(categoryService.updateCategory(updateCategoryRequest), HttpStatus.OK);
     }
 }
