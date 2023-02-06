@@ -65,5 +65,34 @@ public class CategoryServiceImpl implements CategoryService {
         }
     }
 
+    @Override
+    public Category updateCategoryByPatch(UpdateCategoryRequest updateCategoryRequest) {
+
+        if(updateCategoryRequest.getId() != null){
+
+            Optional<CategoryDTO> optionalCategoryDTO = categoryDAO.findById(updateCategoryRequest.getId());
+            if (optionalCategoryDTO.isPresent()) {
+                CategoryDTO categoryDTO = optionalCategoryDTO.get();
+
+                if (updateCategoryRequest.getCategoryName() != null) {
+                    categoryDTO.setCategoryName(updateCategoryRequest.getCategoryName());
+                }
+
+                if (updateCategoryRequest.getCategoryDescription() != null) {
+                    categoryDTO.setCategoryDescription(updateCategoryRequest.getCategoryDescription());
+                }
+
+                categoryDTO = categoryDAO.save(categoryDTO);
+
+                return new Category(categoryDTO.getId(), categoryDTO.getCategoryName(), categoryDTO.getCategoryDescription());
+
+            } else {
+                throw new RuntimeException("Something");
+            }
+        }
+        return new Category();
+
+    }
+
 
 }

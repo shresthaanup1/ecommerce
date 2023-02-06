@@ -10,7 +10,7 @@ public interface CategoryService {
      Category addCategory(AddCategoryRequest addCategoryRequest);
      List<Category> listCategories();
      Category getCategoryById(Long id);
-
      void deleteCategoryById(Long id);
      Category updateCategory(UpdateCategoryRequest updateCategoryRequest);
+     Category updateCategoryByPatch(UpdateCategoryRequest updateCategoryRequest);
 }
