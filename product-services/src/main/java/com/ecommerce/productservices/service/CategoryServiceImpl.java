@@ -42,7 +42,7 @@ public class CategoryServiceImpl implements CategoryService {
             Category category = new Category(categoryDTO.getId(),categoryDTO.getCategoryName(),categoryDTO.getCategoryDescription());
             return category;
         } else {
-            return new Category();
+            throw new CategoryNotFoundException(id);
         }
     }
 
@@ -53,18 +53,23 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category updateCategory(UpdateCategoryRequest updateCategoryRequest) {
-       Optional<CategoryDTO> optionalCategoryDTO = categoryDAO.findById(updateCategoryRequest.getId());
-        if (optionalCategoryDTO.isPresent()) {
-            CategoryDTO categoryDTO = optionalCategoryDTO.get();
-            categoryDTO.setCategoryName(updateCategoryRequest.getCategoryName());
-            categoryDTO.setCategoryDescription(updateCategoryRequest.getCategoryDescription());
-            categoryDTO = categoryDAO.save(categoryDTO);
-            Category category = new Category(categoryDTO.getId(),categoryDTO.getCategoryName(), categoryDTO.getCategoryDescription());
-            return category;
-        }
-        else {
-            return new Category();
-        }
+       if (updateCategoryRequest.getId() != null) {
+           Optional<CategoryDTO> optionalCategoryDTO = categoryDAO.findById(updateCategoryRequest.getId());
+           if (optionalCategoryDTO.isPresent()) {
+               CategoryDTO categoryDTO = optionalCategoryDTO.get();
+               categoryDTO.setCategoryName(updateCategoryRequest.getCategoryName());
+               categoryDTO.setCategoryDescription(updateCategoryRequest.getCategoryDescription());
+               categoryDTO = categoryDAO.save(categoryDTO);
+               Category category = new Category(categoryDTO.getId(),categoryDTO.getCategoryName(), categoryDTO.getCategoryDescription());
+               return category;
+           }
+           else {
+               throw new CategoryNotFoundException(updateCategoryRequest.getId());
+           }
+       } else {
+           throw new JsonParameterNotValidException("id");
+       }
+
     }
 
     @Override
