@@ -2,6 +2,8 @@ package com.ecommerce.productservices.service;
 
 import com.ecommerce.productservices.dao.CategoryDAO;
 import com.ecommerce.productservices.dto.CategoryDTO;
+import com.ecommerce.productservices.exception.CategoryNotFoundException;
+import com.ecommerce.productservices.exception.JsonParameterNotValidException;
 import com.ecommerce.productservices.model.AddCategoryRequest;
 import com.ecommerce.productservices.model.Category;
 import com.ecommerce.productservices.model.UpdateCategoryRequest;
@@ -87,12 +89,10 @@ public class CategoryServiceImpl implements CategoryService {
                 return new Category(categoryDTO.getId(), categoryDTO.getCategoryName(), categoryDTO.getCategoryDescription());
 
             } else {
-                throw new RuntimeException("Something");
+                throw new CategoryNotFoundException(updateCategoryRequest.getId());
             }
+        } else {
+            throw new JsonParameterNotValidException("id");
         }
-        return new Category();
-
     }
-
-
 }
