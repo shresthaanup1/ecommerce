@@ -48,7 +48,13 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void deleteCategoryById(Long id) {
-        categoryDAO.deleteById(id);
+
+        Optional<CategoryDTO> optionalCategoryDTO = categoryDAO.findById(id);
+        if(optionalCategoryDTO.isPresent()){
+            categoryDAO.deleteById(id);
+        }else{
+            throw new CategoryNotFoundException(id);
+        }
     }
 
     @Override
