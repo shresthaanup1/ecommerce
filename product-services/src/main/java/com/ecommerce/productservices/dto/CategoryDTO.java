@@ -1,11 +1,14 @@
 package com.ecommerce.productservices.dto;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
 
 @Entity
 @Table(schema="ecommerce", name="category")
@@ -17,6 +20,8 @@ public class CategoryDTO {
     private String categoryName;
     @Column(name = "category_desc")
     private String categoryDescription;
+    @OneToMany(mappedBy = "categoryDTO", cascade = CascadeType.ALL)
+    private List<ProductDTO> products;
 
     public CategoryDTO() {
     }
