@@ -1,12 +1,16 @@
 package com.ecommerce.productservices.model;
 
+import com.ecommerce.productservices.validation.IsPresentAndValid;
+
 import javax.validation.constraints.NotBlank;
 
 public class UpdateCategoryRequest {
     private Long id;
-    @NotBlank(message="Category name should not be blank")
+
+    @IsPresentAndValid(message="Category name should not be blank.")
     private String categoryName;
-    @NotBlank(message = "Category description should not be blank.")
+
+    @IsPresentAndValid(message="Category description should not be blank.")
     private String categoryDescription;
 
     public UpdateCategoryRequest() {
