@@ -43,12 +43,12 @@ public class CategoryController {
     }
 
     @PutMapping(value = "/category")
-    public ResponseEntity<Category> updateCategory(@RequestBody UpdateCategoryRequest updateCategoryRequest) {
+    public ResponseEntity<Category> updateCategory(@Valid @RequestBody UpdateCategoryRequest updateCategoryRequest) {
         return new ResponseEntity<>(categoryService.updateCategory(updateCategoryRequest), HttpStatus.OK);
     }
 
     @PatchMapping(value = "/category")
-    public ResponseEntity<Category> updateCategoryByPatch(@RequestBody UpdateCategoryRequest updateCategoryRequest) {
+    public ResponseEntity<Category> updateCategoryByPatch(@Valid @RequestBody UpdateCategoryRequest updateCategoryRequest) {
         return new ResponseEntity<>(categoryService.updateCategoryByPatch(updateCategoryRequest), HttpStatus.OK);
     }
 
