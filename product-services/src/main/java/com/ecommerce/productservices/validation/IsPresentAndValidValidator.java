@@ -3,10 +3,9 @@ package com.ecommerce.productservices.validation;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class IsPresentAndValidValidator implements ConstraintValidator<IsPresentAndValid,Object> {
+public class IsPresentAndValidValidator implements ConstraintValidator<IsPresentAndValid,String> {
     @Override
-    public boolean isValid(Object value, ConstraintValidatorContext context) {
-        System.out.println(value);
+    public boolean isValid(String value, ConstraintValidatorContext context) {
         if (value == null) { //checking if the field has been mentioned in the request body or not, if not mentioned return true
             return true;
         }
