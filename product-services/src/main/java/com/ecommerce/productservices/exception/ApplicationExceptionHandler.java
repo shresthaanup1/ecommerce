@@ -15,7 +15,7 @@ import java.util.List;
 
 @ControllerAdvice
 public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler {
-    @ExceptionHandler({CategoryNotFoundException.class})
+    @ExceptionHandler({CategoryNotFoundException.class, ProductNotFoundException.class})
     public ResponseEntity<Object> handleResourceNotFoundException(RuntimeException ex) {
         ErrorResponse errorResponse = new ErrorResponse(Arrays.asList(ex.getLocalizedMessage()));
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
