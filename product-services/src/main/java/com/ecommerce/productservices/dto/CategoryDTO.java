@@ -16,7 +16,7 @@ public class CategoryDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "category_name")
+    @Column(name = "category_name",unique = true)
     private String categoryName;
     @Column(name = "category_desc")
     private String categoryDescription;

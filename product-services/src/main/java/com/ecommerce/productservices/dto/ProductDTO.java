@@ -16,7 +16,7 @@ public class ProductDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "product_name")
+    @Column(name = "product_name",unique = true)
     private String productName;
     @Column(name = "product_price")
     private Double productPrice;
