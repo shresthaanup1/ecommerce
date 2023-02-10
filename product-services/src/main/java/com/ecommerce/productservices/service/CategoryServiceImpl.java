@@ -4,8 +4,10 @@ import com.ecommerce.productservices.dao.CategoryDAO;
 import com.ecommerce.productservices.dto.CategoryDTO;
 import com.ecommerce.productservices.exception.CategoryNotFoundException;
 import com.ecommerce.productservices.exception.JsonParameterNotValidException;
+import com.ecommerce.productservices.exception.ProductNotFoundException;
 import com.ecommerce.productservices.model.AddCategoryRequest;
 import com.ecommerce.productservices.model.Category;
+import com.ecommerce.productservices.model.Product;
 import com.ecommerce.productservices.model.UpdateCategoryRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -105,5 +107,10 @@ public class CategoryServiceImpl implements CategoryService {
         } else {
             throw new JsonParameterNotValidException("id");
         }
+    }
+
+    static CategoryDTO unwrapCategoryDTO(Optional<CategoryDTO> entity, Long id) {
+        if (entity.isPresent()) return entity.get();
+        else throw new CategoryNotFoundException(id);
     }
 }

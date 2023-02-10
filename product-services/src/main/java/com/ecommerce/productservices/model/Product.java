@@ -1,6 +1,7 @@
 package com.ecommerce.productservices.model;
 
 import com.ecommerce.productservices.dto.CategoryDTO;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
@@ -17,7 +18,7 @@ public class Product {
     private boolean isActive;
 
     private boolean isAvailable;
-
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime createdAt;
 
 
