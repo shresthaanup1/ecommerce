@@ -10,6 +10,8 @@ import com.ecommerce.productservices.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -37,6 +39,30 @@ public class ProductServiceImpl implements ProductService{
                 , productDTO.isAvailable()
                 ,productDTO.getCreatedAt()
                 ,productDTO.getCategoryDTO());
+    }
+
+
+
+
+    @Override
+    public List<Product> listProduct() {
+        List<ProductDTO> productDTOList = productDAO.findAll();
+        List<Product> productList = new ArrayList<>();
+        productDTOList.forEach((productDTO) -> productList.add(new Product(productDTO.getId(),productDTO.getProductName()
+                ,productDTO.getProductPrice()
+                , productDTO.isActive()
+                , productDTO.isAvailable()
+                ,productDTO.getCreatedAt()
+                ,productDTO.getCategoryDTO() )));
+
+        return productList;
+    }
+
+    @Override
+    public Product getProductById(Long id) {
+        Optional<ProductDTO> optionalProductDTO = productDAO.findById(id);
+        return new Product();
+
     }
     static ProductDTO unwrapProductDTO(Optional<ProductDTO> entity, Long id) {
         if (entity.isPresent()) return entity.get();
