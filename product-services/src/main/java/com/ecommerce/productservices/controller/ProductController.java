@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductController {
     @Autowired
     private ProductService productService;
-    @PostMapping(value ="/add")
+    @PostMapping
     public ResponseEntity<Product> addProduct(@RequestBody AddProductRequest addProductRequest) {
         return new ResponseEntity<>(productService.addProduct(addProductRequest), HttpStatus.CREATED);
     }
