@@ -18,9 +18,14 @@ public class ProductServicesApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		boolean insertCategories = false;
+		boolean insertProudcts = false;
 
 		if (insertCategories) {
 			dataInserter.insertCategories();
+		}
+
+		if (insertProudcts) {
+			dataInserter.insertProducts();
 		}
 	}
 }
