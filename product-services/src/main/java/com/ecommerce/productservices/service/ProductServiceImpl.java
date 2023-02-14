@@ -140,6 +140,20 @@ public class ProductServiceImpl implements ProductService{
         ProductDTO productDTO = unwrapProductDTO(optionalProductDTO, id);
         productDAO.deleteById(id);
     }
+    @Override
+    public List<Product> getCategoryProducts(Long categoryId) {
+        List<ProductDTO> productDTOList = productDAO.findByCategoryId(categoryId);
+        List<Product> productList = new ArrayList<>();
+        productDTOList.forEach((productDTO) -> productList.add(new Product(productDTO.getId(),productDTO.getProductName()
+                ,productDTO.getProductPrice()
+                , productDTO.isActive()
+                , productDTO.isAvailable()
+                ,productDTO.getCreatedAt()
+                ,productDTO.getCategoryDTO().getCategoryName() )));
+
+        return productList;
+    }
+
 
     static ProductDTO unwrapProductDTO(Optional<ProductDTO> entity, Long id) {
         if (entity.isPresent()) return entity.get();

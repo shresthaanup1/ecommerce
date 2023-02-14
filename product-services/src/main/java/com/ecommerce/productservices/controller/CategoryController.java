@@ -2,6 +2,7 @@ package com.ecommerce.productservices.controller;
 
 import com.ecommerce.productservices.model.AddCategoryRequest;
 import com.ecommerce.productservices.model.Category;
+import com.ecommerce.productservices.model.Product;
 import com.ecommerce.productservices.model.UpdateCategoryRequest;
 import com.ecommerce.productservices.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
