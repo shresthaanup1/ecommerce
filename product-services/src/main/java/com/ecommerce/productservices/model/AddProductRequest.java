@@ -3,19 +3,20 @@ package com.ecommerce.productservices.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 public class AddProductRequest {
     @NotBlank(message = "Product name cannot be blank")
     private String productName;
-    @NotBlank(message = "Product price cannot be blank")
+    @NotNull(message = "Product price cannot be blank")
     private Double productPrice;
     @JsonProperty
     private boolean isActive;
     @JsonProperty
     private boolean isAvailable;
     private LocalDateTime createdAt;
-    @NotBlank(message = "Category name cannot be blank")
+    @NotNull(message = "Category name cannot be blank")
     private Long categoryId;
 
     public AddProductRequest() {
