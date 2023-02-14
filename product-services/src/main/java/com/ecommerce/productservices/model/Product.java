@@ -2,6 +2,7 @@ package com.ecommerce.productservices.model;
 
 import com.ecommerce.productservices.dto.CategoryDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
@@ -21,20 +22,19 @@ public class Product {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime createdAt;
 
-
-    private CategoryDTO categoryDTO;
+    private String categoryName;
 
     public Product() {
     }
 
-    public Product(Long id, String productName, Double productPrice, boolean isActive, boolean isAvailable, LocalDateTime createdAt, CategoryDTO categoryDTO) {
+    public Product(Long id, String productName, Double productPrice, boolean isActive, boolean isAvailable, LocalDateTime createdAt, String categoryName) {
         this.id = id;
         this.productName = productName;
         this.productPrice = productPrice;
         this.isActive = isActive;
         this.isAvailable = isAvailable;
         this.createdAt = createdAt;
-        this.categoryDTO = categoryDTO;
+        this.categoryName = categoryName;
     }
 
     public Long getId() {
@@ -85,11 +85,11 @@ public class Product {
         this.createdAt = createdAt;
     }
 
-    public CategoryDTO getCategoryDTO() {
-        return categoryDTO;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setCategoryDTO(CategoryDTO categoryDTO) {
-        this.categoryDTO = categoryDTO;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }

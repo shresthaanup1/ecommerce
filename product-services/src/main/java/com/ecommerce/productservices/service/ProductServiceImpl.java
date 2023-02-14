@@ -40,7 +40,7 @@ public class ProductServiceImpl implements ProductService{
                 , productDTO.isActive()
                 , productDTO.isAvailable()
                 ,productDTO.getCreatedAt()
-                ,productDTO.getCategoryDTO());
+                ,productDTO.getCategoryDTO().getCategoryName());
     }
 
 
@@ -55,7 +55,7 @@ public class ProductServiceImpl implements ProductService{
                 , productDTO.isActive()
                 , productDTO.isAvailable()
                 ,productDTO.getCreatedAt()
-                ,productDTO.getCategoryDTO() )));
+                ,productDTO.getCategoryDTO().getCategoryName() )));
 
         return productList;
     }
@@ -69,7 +69,7 @@ public class ProductServiceImpl implements ProductService{
                 ,productDTO.isActive()
                 ,productDTO.isAvailable()
                 ,productDTO.getCreatedAt()
-                ,productDTO.getCategoryDTO());
+                ,productDTO.getCategoryDTO().getCategoryName());
 
     }
 
@@ -92,7 +92,7 @@ public class ProductServiceImpl implements ProductService{
                     ,productDTO.isActive()
                     ,productDTO.isAvailable()
                     ,productDTO.getCreatedAt()
-                    ,productDTO.getCategoryDTO());
+                    ,productDTO.getCategoryDTO().getCategoryName());
         }else{
             throw new JsonParameterNotValidException("id");
         }
@@ -128,7 +128,7 @@ public class ProductServiceImpl implements ProductService{
                     ,productDTO.isActive()
                     ,productDTO.isAvailable()
                     ,productDTO.getCreatedAt()
-                    ,productDTO.getCategoryDTO());
+                    ,productDTO.getCategoryDTO().getCategoryName());
         }else{
             throw new JsonParameterNotValidException("id");
         }
