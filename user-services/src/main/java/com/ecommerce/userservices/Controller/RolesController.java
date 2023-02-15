@@ -2,6 +2,7 @@ package com.ecommerce.userservices.Controller;
 
 import com.ecommerce.userservices.model.AddRolesRequest;
 import com.ecommerce.userservices.model.Roles;
+import com.ecommerce.userservices.model.UpdateRolesRequest;
 import com.ecommerce.userservices.service.RolesService;
 import com.ecommerce.userservices.service.RolesServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +33,13 @@ public class RolesController {
    public ResponseEntity<HttpStatus>deleteRolesById(@PathVariable Long id){
         rolesService.deleteRolesById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    @PutMapping(value ="/role")
+    public ResponseEntity<Roles>updateRoles(@RequestBody UpdateRolesRequest updateRolesRequest){
+        return new ResponseEntity<>(rolesService.updateRoles(updateRolesRequest), HttpStatus.ACCEPTED);
+    }
+    @PatchMapping(value="/role")
+    public ResponseEntity<Roles> patchRoles(@RequestBody UpdateRolesRequest updateRolesRequest){
+        return new ResponseEntity<>(rolesService.patchRoles(updateRolesRequest),HttpStatus.OK);
     }
 }

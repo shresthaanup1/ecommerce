@@ -14,23 +14,24 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class RolesServiceImpl implements RolesService{
+public class RolesServiceImpl implements RolesService {
     @Autowired
     private RolesDAO rolesDAO;
+
     @Override
-    public Roles addRoles(AddRolesRequest addRolesRequest){
+    public Roles addRoles(AddRolesRequest addRolesRequest) {
         RolesDTO rolesDTO = new RolesDTO(addRolesRequest.getRoleName(), addRolesRequest.getRoleDescription());
         rolesDTO = rolesDAO.save(rolesDTO);
-        return new Roles(rolesDTO.getId(), rolesDTO.getRoleName(),rolesDTO.getRoleDescription());
+        return new Roles(rolesDTO.getId(), rolesDTO.getRoleName(), rolesDTO.getRoleDescription());
     }
 
     @Override
     public List<Roles> listRoles() {
         List<RolesDTO> rolesDTOs = rolesDAO.findAll();
-        List<Roles> roles =new ArrayList<>();
-         for(RolesDTO rolesDTO: rolesDTOs){
-             roles.add(new Roles(rolesDTO.getId(), rolesDTO.getRoleName(), rolesDTO.getRoleDescription()));
-         }
+        List<Roles> roles = new ArrayList<>();
+        for (RolesDTO rolesDTO : rolesDTOs) {
+            roles.add(new Roles(rolesDTO.getId(), rolesDTO.getRoleName(), rolesDTO.getRoleDescription()));
+        }
         return roles;
     }
 
@@ -50,10 +51,54 @@ public class RolesServiceImpl implements RolesService{
         rolesDAO.deleteById(id);
     }
 
-   /* @Override
-     public Roles updateRoles(UpdateRolesRequest updateRolesRequest) {
+    @Override
+    public Roles updateRoles(UpdateRolesRequest updateRolesRequest) {
+        //get Id from request body
+        // updateRolesRequest.getId();
+        //Check if the ID is not null or not
+        // if its Null throw exception
+        // if not do regular stuff
+        // check if the ID is there in the DB or not
+        //rolesDAO.findById(updateRolesRequest.getId());
+//        RolesDTO rolesDTO = rolesDAO.findById(updateRolesRequest.getId()).get();
+//        rolesDTO.setRoleName(updateRolesRequest.getRoleName());
+//        rolesDTO.setRoleDescription(updateRolesRequest.getRoleDescription());
+//        rolesDAO.save(rolesDTO);
+//        return new Roles(rolesDTO.getId(), rolesDTO.getRoleName(), rolesDTO.getRoleDescription());
 
-     return null;
- }*/
+        // copy value from request body to objecgt from the database
+        Optional<RolesDTO> optionalRolesDTO = rolesDAO.findById(updateRolesRequest.getId());
+        if (optionalRolesDTO.isPresent()) {
+            RolesDTO rolesDTO = optionalRolesDTO.get();
+            rolesDTO.setRoleName(updateRolesRequest.getRoleName());
+            rolesDTO.setRoleDescription(updateRolesRequest.getRoleDescription());
+            rolesDTO = rolesDAO.save(rolesDTO);
+            Roles updatedroles = new Roles(rolesDTO.getId(), rolesDTO.getRoleName(), rolesDTO.getRoleDescription());
+            return updatedroles;
+        }
+        else {
+            return new Roles();
+        }
+        // RolesDTO rolesDTO  =  rolesDAO.findById(updateRolesRequest.getId());
+        // save the updated object to datbase
+        // return newly created to controller
+    }
 
+    @Override
+    public Roles patchRoles(UpdateRolesRequest updateRolesRequest) {
+        Optional<RolesDTO> optionalRolesDTO = rolesDAO.findById(updateRolesRequest.getId());
+        if (optionalRolesDTO.isPresent()) {
+            RolesDTO rolesDTO = optionalRolesDTO.get();
+            if(updateRolesRequest.getRoleName()!= null) {
+                rolesDTO.setRoleName(updateRolesRequest.getRoleName());
+            }
+            if(updateRolesRequest.getRoleDescription()!=null) {
+                rolesDTO.setRoleDescription(updateRolesRequest.getRoleDescription());
+            }
+            rolesDTO = rolesDAO.save(rolesDTO);
+            Roles updatedroles = new Roles(rolesDTO.getId(), rolesDTO.getRoleName(), rolesDTO.getRoleDescription());
+            return updatedroles;
+        }
+       return null;
+    }
 }

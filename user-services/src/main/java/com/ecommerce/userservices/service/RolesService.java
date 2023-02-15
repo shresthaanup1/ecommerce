@@ -11,8 +11,8 @@ public interface RolesService{
     List<Roles> listRoles();
     Roles getRolesById(Long id);
     void deleteRolesById(Long id);
+   Roles updateRoles(UpdateRolesRequest updateRolesRequest);
+    Roles patchRoles(UpdateRolesRequest updateRolesRequest);
 
-   // Roles updateRoles(UpdateRolesRequest updateRolesRequest);
-    //Roles updateRolesByPatch(UpdateRolesRequest updateRolesRequest);
 
 }
