@@ -2,6 +2,7 @@ package com.ecommerce.userservices.service;
 
 import com.ecommerce.userservices.dao.RolesDAO;
 import com.ecommerce.userservices.dto.RolesDTO;
+import com.ecommerce.userservices.exception.JsonParameterNotValidException;
 import com.ecommerce.userservices.exception.RolesNotFoundException;
 import com.ecommerce.userservices.model.AddRolesRequest;
 import com.ecommerce.userservices.model.Roles;
@@ -9,8 +10,6 @@ import com.ecommerce.userservices.model.UpdateRolesRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.management.relation.Role;
-import javax.management.relation.RoleNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -61,6 +60,7 @@ public class RolesServiceImpl implements RolesService {
 
     @Override
     public Roles updateRoles(UpdateRolesRequest updateRolesRequest) {
+        if(updateRolesRequest.getId() !=null){
         //get Id from request body
         // updateRolesRequest.getId();
         //Check if the ID is not null or not
@@ -83,17 +83,21 @@ public class RolesServiceImpl implements RolesService {
             rolesDTO = rolesDAO.save(rolesDTO);
             Roles updatedroles = new Roles(rolesDTO.getId(), rolesDTO.getRoleName(), rolesDTO.getRoleDescription());
             return updatedroles;
+        } else {
+            throw new RolesNotFoundException(updateRolesRequest.getId());
+             }
         }
-        else {
-            return new Roles();
-        }
-        // RolesDTO rolesDTO  =  rolesDAO.findById(updateRolesRequest.getId());
-        // save the updated object to datbase
-        // return newly created to controller
+        else{
+            throw new JsonParameterNotValidException("id");
+            }
+            // RolesDTO rolesDTO  =  rolesDAO.findById(updateRolesRequest.getId());
+            // save the updated object to datbase
+            // return newly created to controller
     }
 
     @Override
     public Roles patchRoles(UpdateRolesRequest updateRolesRequest) {
+        if(updateRolesRequest.getId() !=null){
         Optional<RolesDTO> optionalRolesDTO = rolesDAO.findById(updateRolesRequest.getId());
         if (optionalRolesDTO.isPresent()) {
             RolesDTO rolesDTO = optionalRolesDTO.get();
@@ -107,6 +111,11 @@ public class RolesServiceImpl implements RolesService {
             Roles updatedroles = new Roles(rolesDTO.getId(), rolesDTO.getRoleName(), rolesDTO.getRoleDescription());
             return updatedroles;
         }
-       return null;
+       else{
+           throw new RolesNotFoundException(updateRolesRequest.getId());
+        }
+    }else{
+          throw new JsonParameterNotValidException("id");
+        }
     }
 }
