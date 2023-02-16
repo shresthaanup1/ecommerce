@@ -2,6 +2,7 @@ package com.ecommerce.userservices.service;
 
 import com.ecommerce.userservices.dao.RolesDAO;
 import com.ecommerce.userservices.dto.RolesDTO;
+import com.ecommerce.userservices.exception.RolesNotFoundException;
 import com.ecommerce.userservices.model.AddRolesRequest;
 import com.ecommerce.userservices.model.Roles;
 import com.ecommerce.userservices.model.UpdateRolesRequest;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.management.relation.Role;
+import javax.management.relation.RoleNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -38,17 +40,23 @@ public class RolesServiceImpl implements RolesService {
     @Override
     public Roles getRolesById(Long id) {
         Optional<RolesDTO> optionalrolesDTO = rolesDAO.findById(id);
-        Roles roles = null;
         if (optionalrolesDTO.isPresent()) {
             RolesDTO rolesDTO = optionalrolesDTO.get();
-            roles = new Roles(rolesDTO.getId(), rolesDTO.getRoleName(), rolesDTO.getRoleDescription());
+           Roles roles = new Roles(rolesDTO.getId(), rolesDTO.getRoleName(), rolesDTO.getRoleDescription());
+           return roles;
+        }else{
+            throw new RolesNotFoundException(id);
         }
-        return roles;
     }
 
     @Override
     public void deleteRolesById(Long id) {
-        rolesDAO.deleteById(id);
+        Optional<RolesDTO> optionalRolesDTO = rolesDAO.findById(id);
+        if(optionalRolesDTO.isPresent()){
+            rolesDAO.deleteById(id);
+        }else {
+            throw new RolesNotFoundException(id);
+        }
     }
 
     @Override
