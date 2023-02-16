@@ -1,7 +1,11 @@
 package com.ecommerce.authservices.security;
 
 import com.ecommerce.authservices.security.filter.AuthenticationFilter;
+import com.ecommerce.authservices.security.filter.FilterOne;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.jackson.Jacksonized;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,13 +22,17 @@ import org.springframework.http.HttpMethod;
 
 
 @Configuration
-//@AllArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class SecurityConfig {
-   // @Autowired
-   // private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter();
+        //change the default url login to authenticate
+        authenticationFilter.setFilterProcessesUrl("/authenticate");
 
         http
                 .csrf().disable()
@@ -32,7 +40,8 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.POST, SecurityConstants.REGISTER_PATH).permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilter(new AuthenticationFilter())
+                //.addFilterBefore(new FilterOne(),AuthenticationFilter.class)
+                .addFilter(authenticationFilter)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         return http.build();
     }
@@ -41,17 +50,18 @@ public class SecurityConfig {
     public UserDetailsService users() {
         UserDetails admin = User.builder()
                 .username("admin")
-               // .password(bCryptPasswordEncoder.encode("test"))
-                .password("test")
+                .password(bCryptPasswordEncoder.encode("test"))
+               // .password("test")
                 .roles("ADMIN")
                 .build();
         UserDetails user = User.builder()
                 .username("user")
-                //.password(bCryptPasswordEncoder.encode("test1"))
-                .password("test")
+                .password(bCryptPasswordEncoder.encode("test1"))
+                //.password("test")
                 .roles("USER")
                 .build();
         return new InMemoryUserDetailsManager(admin, user);
 
     }
+
 }
