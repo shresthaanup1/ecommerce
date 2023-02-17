@@ -1,7 +1,7 @@
 package com.ecommerce.authservices.security;
 
 import com.ecommerce.authservices.security.filter.AuthenticationFilter;
-import com.ecommerce.authservices.security.filter.FilterOne;
+import com.ecommerce.authservices.security.filter.ExceptionHandlerFilter;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +40,7 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.POST, SecurityConstants.REGISTER_PATH).permitAll()
                 .anyRequest().authenticated()
                 .and()
-                //.addFilterBefore(new FilterOne(),AuthenticationFilter.class)
+                .addFilterBefore(new ExceptionHandlerFilter(),AuthenticationFilter.class)
                 .addFilter(authenticationFilter)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         return http.build();
