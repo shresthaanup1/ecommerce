@@ -4,31 +4,31 @@ package com.ecommerce.userservices.dto;
     import java.time.LocalDate;
 
 @Entity
-@Table(schema ="ecommerce", name = "user_details")
-public class UserDetailsDTO {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Table(schema ="ecommerce", name = "user_details")
+    public class UserDetailsDTO {
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
 
-    @Column(name = "first_name")
-    private String firstName;
+        @Column(name = "first_name")
+        private String firstName;
 
-    @Column(name = "middle_name")
-    private String middleName;
+        @Column(name = "middle_name")
+        private String middleName;
 
-    @Column(name = "last_name")
-    private String lastName;
+        @Column(name = "last_name")
+        private String lastName;
 
-    @Column(name = "date_of_birth")
-    private LocalDate dateofBirth;
+        @Column(name = "date_of_birth")
+        private LocalDate dateofBirth;
 
-    @Column(name ="address")
-    private String address;
+        @Column(name ="address")
+        private String address;
 
-    public UserDetailsDTO() {
-    }
+        public UserDetailsDTO() {}
 
-    public UserDetailsDTO( String firstName, String middleName, String lastName, LocalDate dateofBirth, String address) {
+    public UserDetailsDTO(Long id, String firstName, String middleName, String lastName, LocalDate dateofBirth, String address) {
+        this.id = id;
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
