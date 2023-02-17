@@ -2,6 +2,7 @@ package com.ecommerce.authservices.security;
 
 import com.ecommerce.authservices.security.filter.AuthenticationFilter;
 import com.ecommerce.authservices.security.filter.ExceptionHandlerFilter;
+import com.ecommerce.authservices.security.filter.JWTAuthorizationFilter;
 import com.ecommerce.authservices.security.manager.CustomAuthenticationManager;
 import lombok.AllArgsConstructor;
 
