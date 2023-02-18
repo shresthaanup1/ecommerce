@@ -1,40 +1,24 @@
-package com.ecommerce.userservices.dto;
+package com.ecommerce.userservices.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import javax.persistence.*;
 import java.time.LocalDate;
 
-@Entity
-@Table(schema ="ecommerce", name = "user_details")
-public class UserDetailsDTO {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UserDetails {
     private Long id;
-
-    @Column(name = "first_name")
     private String firstName;
-
-    @Column(name = "middle_name")
     private String middleName;
-
-    @Column(name = "last_name")
     private String lastName;
-
-    @Column(name = "date_of_birth")
-    @JsonFormat(pattern = "YYYY-MM-DD")
-    private LocalDate dateofBirth;
-
-    @Column(name ="address")
+    private LocalDate dateOfBirth;
     private String address;
 
-    public UserDetailsDTO() {}
+    public UserDetails() {
+    }
 
-    public UserDetailsDTO(String firstName, String middleName, String lastName, LocalDate dateofBirth, String address) {
+    public UserDetails(Long id, String firstName, String middleName, String lastName, LocalDate dateOfBirth, String address) {
+        this.id = id;
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
-        this.dateofBirth = dateofBirth;
+        this.dateOfBirth = dateOfBirth;
         this.address = address;
     }
 
@@ -70,12 +54,12 @@ public class UserDetailsDTO {
         this.lastName = lastName;
     }
 
-    public LocalDate getDateofBirth() {
-        return dateofBirth;
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public void setDateofBirth(LocalDate dateofBirth) {
-        this.dateofBirth = dateofBirth;
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public String getAddress() {
