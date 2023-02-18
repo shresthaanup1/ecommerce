@@ -33,8 +33,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
             //login
             //deserialize the username and password from request to change into User object
             UserCredentials user = new ObjectMapper().readValue(request.getInputStream(), UserCredentials.class);
-            System.out.println(user.getUsername());
-            System.out.println(user.getPassword());
+           // System.out.println(user.getUsername());
+           // System.out.println(user.getPassword());
 
             Authentication authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
             return customAuthenticationManager.authenticate(authentication);

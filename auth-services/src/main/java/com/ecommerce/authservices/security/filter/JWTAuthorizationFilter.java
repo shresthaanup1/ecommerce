@@ -41,7 +41,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         //Create authentication object to set in Application Context
         //this is wrong constructor which may throw null pointer exception
        //  Authentication authentication = new UsernamePasswordAuthenticationToken(user, null);
-         Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         //After successful authentication we go to next filter which is operation requested by client
