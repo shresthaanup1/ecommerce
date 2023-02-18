@@ -1,4 +1,4 @@
-package user;
+package com.ecommerce.authservices.user;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

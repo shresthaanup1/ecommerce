@@ -1,4 +1,4 @@
-package user;
+package com.ecommerce.authservices.user;
 
 public class User {
     private Long id;
