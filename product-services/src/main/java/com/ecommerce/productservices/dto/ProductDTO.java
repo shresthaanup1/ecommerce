@@ -12,9 +12,7 @@ import javax.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(schema="ecommerce",name = "product",uniqueConstraints={
-        @UniqueConstraint(columnNames = {"category_id"})
-})
+@Table(schema="ecommerce",name = "product")
 public class ProductDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
