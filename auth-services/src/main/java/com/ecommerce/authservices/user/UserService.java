@@ -25,4 +25,9 @@ public class UserService {
         }
         return users;
     }
+
+    public User getUserByUserName(String name) {
+        UserDTO userDTO = userDAO.findById(1L).get();
+        return new User(userDTO.getId(),userDTO.getUserName(),userDTO.getUserEmail());
+    }
 }
