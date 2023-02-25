@@ -62,10 +62,12 @@ public class AuthController {
             String username = jwtUtility.getUsernameFromJwtToken(jwtToken);
 
             // Retrieve user details and return response
-            User user = userService.getUserByUserName(username);
-            return ResponseEntity.ok(user);
+            //User user = userService.getUserByUserName(username);`
+            //return ResponseEntity.ok(user);
+            return ResponseEntity.ok("Token is fine.");
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            //return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return ResponseEntity.ok("Token is not fine.");
         }
     }
 

@@ -35,7 +35,8 @@ public class JWTUtility {
                     .verify(token);
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Invalid token");
+            //e.printStackTrace();
         }
 
         return false;
