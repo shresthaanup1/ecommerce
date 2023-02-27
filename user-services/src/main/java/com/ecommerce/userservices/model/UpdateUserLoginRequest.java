@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 public class UpdateUserLoginRequest {
 
     private Long id;
-    private String userId;
     @NotBlank(message = "Username should not be blank.")
     private String userName;
     @NotBlank(message = "Username should not be blank.")
@@ -16,14 +15,14 @@ public class UpdateUserLoginRequest {
     private LocalDateTime lastLogin;
 
     private boolean isActive;
-    private String roleId;
+    private Long roleId;
+    private String userId;
 
     public UpdateUserLoginRequest() {
     }
 
-    public UpdateUserLoginRequest(Long id, String userId, String userName, String password, String email, LocalDateTime createdAt, LocalDateTime lastLogin, boolean isActive, String roleId) {
+    public UpdateUserLoginRequest(Long id, String userName, String password, String email, LocalDateTime createdAt, LocalDateTime lastLogin, boolean isActive, Long roleId, String userId) {
         this.id = id;
-        this.userId = userId;
         this.userName = userName;
         this.password = password;
         this.email = email;
@@ -31,28 +30,19 @@ public class UpdateUserLoginRequest {
         this.lastLogin = lastLogin;
         this.isActive = isActive;
         this.roleId = roleId;
+        this.userId = userId;
     }
 
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public String getUserName() {
         return userName;
     }
-
     public void setUserName(String userName) {
         this.userName = userName;
     }
@@ -60,7 +50,6 @@ public class UpdateUserLoginRequest {
     public String getPassword() {
         return password;
     }
-
     public void setPassword(String password) {
         this.password = password;
     }
@@ -68,7 +57,6 @@ public class UpdateUserLoginRequest {
     public String getEmail() {
         return email;
     }
-
     public void setEmail(String email) {
         this.email = email;
     }
@@ -76,7 +64,6 @@ public class UpdateUserLoginRequest {
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
-
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
@@ -84,7 +71,6 @@ public class UpdateUserLoginRequest {
     public LocalDateTime getLastLogin() {
         return lastLogin;
     }
-
     public void setLastLogin(LocalDateTime lastLogin) {
         this.lastLogin = lastLogin;
     }
@@ -92,16 +78,21 @@ public class UpdateUserLoginRequest {
     public boolean getIsActive() {
         return isActive;
     }
-
     public void setActive(boolean active) {
         isActive = active;
     }
 
-    public String getRoleId() {
+    public Long getRoleId() {
         return roleId;
     }
-
-    public void setRoleId(String roleId) {
+    public void setRoleId(Long roleId) {
         this.roleId = roleId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

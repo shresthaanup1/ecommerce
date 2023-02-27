@@ -1,42 +1,37 @@
 package com.ecommerce.userservices.model;
 
+import com.ecommerce.userservices.dto.RolesDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
 
 public class UserLogin {
     private Long id;
-
-    private String userId;
-
     private String userName;
-
     private String password;
-
     private String email;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime createdAt;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime lastLogin;
-
     private boolean isActive;
-
-    private String roleId;
+    private String roleName;
+    private String userId;
 
     public UserLogin() {
     }
 
-    public UserLogin(Long id, String userId, String userName, String password, String email,
-                     LocalDateTime createdAt, LocalDateTime lastLogin, boolean isActive, String roleId) {
+    public UserLogin(Long id, String userName, String password, String email, LocalDateTime createdAt,
+                     LocalDateTime lastLogin, boolean isActive, String roleName, String userId) {
         this.id = id;
-        this.userId = userId;
         this.userName = userName;
         this.password = password;
         this.email = email;
         this.createdAt = createdAt;
         this.lastLogin = lastLogin;
         this.isActive = isActive;
-        this.roleId = roleId;
+        this.roleName = roleName;
+        this.userId = userId;
     }
 
     public Long getId() {
@@ -45,14 +40,6 @@ public class UserLogin {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public String getUserName() {
@@ -95,7 +82,7 @@ public class UserLogin {
         this.lastLogin = lastLogin;
     }
 
-    public boolean getIsActive() {
+    public boolean isActive() {
         return isActive;
     }
 
@@ -103,11 +90,19 @@ public class UserLogin {
         isActive = active;
     }
 
-    public String getRoleId() {
-        return roleId;
+    public String getRoleName() {
+        return roleName;
     }
 
-    public void setRoleId(String roleId) {
-        this.roleId = roleId;
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserDetailsName(String userDetailsName) {
+        userId = userId;
     }
 }

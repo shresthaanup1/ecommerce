@@ -1,7 +1,11 @@
 package com.ecommerce.userservices.model;
 
+import javax.validation.constraints.NotBlank;
+
 public class AddRolesRequest {
+    @NotBlank(message = "Role name should be blank")
     private String roleName;
+    @NotBlank(message = "Role description should be blank")
     private String roleDescription;
 
     public AddRolesRequest() {

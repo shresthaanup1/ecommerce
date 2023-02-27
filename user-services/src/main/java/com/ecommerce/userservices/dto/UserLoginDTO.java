@@ -8,8 +8,6 @@ public class UserLoginDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name="user_details_id")
-    private String userId;
     @Column(name="user_name",unique = true, nullable = false, length = 100)
     private String userName;
     @Column(name="user_password" , nullable = false, length = 100)
@@ -22,23 +20,27 @@ public class UserLoginDTO {
     private LocalDateTime lastLogin;
     @Column(name ="is_active")
     private boolean isActive;
-    @Column(name ="user_role_id")
-    private String roleId;
+    @ManyToOne(fetch =FetchType.LAZY, optional = false)
+    @JoinColumn(name = "role_id", referencedColumnName = "id")
+    private RolesDTO rolesDTO;
+    @OneToOne(fetch = FetchType.LAZY, optional =false)
+    @JoinColumn(name = "user_details_id", referencedColumnName = "id")
+     private UserDetailsDTO userDetailsDTO;
 
     public UserLoginDTO() {
     }
 
-    public UserLoginDTO(String userId, String userName, String password, String email,
-                     LocalDateTime createdAt, LocalDateTime lastLogin, boolean isActive, String roleId) {
-        this.userId = userId;
+    public UserLoginDTO(String userName, String password, String email, LocalDateTime createdAt, LocalDateTime lastLogin, boolean isActive, RolesDTO rolesDTO, UserDetailsDTO userDetailsDTO) {
         this.userName = userName;
         this.password = password;
         this.email = email;
         this.createdAt = createdAt;
         this.lastLogin = lastLogin;
         this.isActive = isActive;
-        this.roleId = roleId;
+        this.rolesDTO = rolesDTO;
+        this.userDetailsDTO = userDetailsDTO;
     }
+
 
     public Long getId() {
         return id;
@@ -46,14 +48,6 @@ public class UserLoginDTO {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public String getUserName() {
@@ -100,16 +94,24 @@ public class UserLoginDTO {
         return isActive;
     }
 
-    public void setActive(boolean isActive) {
-        this.isActive = isActive;
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
-    public String getRoleId() {
-        return roleId;
+    public RolesDTO getRolesDTO() {
+        return rolesDTO;
     }
 
-    public void setRoleId(String roleId) {
-        this.roleId = roleId;
+    public void setRolesDTO(RolesDTO rolesDTO) {
+        this.rolesDTO = rolesDTO;
+    }
+
+    public UserDetailsDTO getUserDetailsDTO() {
+        return userDetailsDTO;
+    }
+
+    public void setUserDetailsDTO(UserDetailsDTO userDetailsDTO) {
+        this.userDetailsDTO = userDetailsDTO;
     }
 }
 

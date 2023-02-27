@@ -6,36 +6,29 @@ import java.time.LocalDateTime;
 
 public class AddUserLoginRequest {
 
-    private String userId;
     @NotBlank(message="Username should not be blank.")
     private  String userName;
     @NotBlank(message="Username should not be blank.")
     private String password;
     private String email;
     private LocalDateTime createdAt;
+    private LocalDateTime lastLogin;
     @JsonProperty
     private boolean isActive;
-    private String roleId;
+    private Long roleId;
+    private String userId;
 
     public AddUserLoginRequest() {
     }
 
-    public AddUserLoginRequest(String userId, String userName, String password, String email, LocalDateTime createdAt, boolean isActive, String roleId) {
-
-        this.userId = userId;
+    public AddUserLoginRequest(String userName, String password, String email, LocalDateTime createdAt, LocalDateTime lastLogin, boolean isActive, Long roleId, String userId) {
         this.userName = userName;
         this.password = password;
         this.email = email;
         this.createdAt = createdAt;
+        this.lastLogin = lastLogin;
         this.isActive = isActive;
         this.roleId = roleId;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
         this.userId = userId;
     }
 
@@ -71,6 +64,14 @@ public class AddUserLoginRequest {
         this.createdAt = createdAt;
     }
 
+    public LocalDateTime getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(LocalDateTime lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+
     public boolean isActive() {
         return isActive;
     }
@@ -79,11 +80,19 @@ public class AddUserLoginRequest {
         isActive = active;
     }
 
-    public String getRoleId() {
+    public Long getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(String roleId) {
+    public void setRoleId(Long roleId) {
         this.roleId = roleId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }
