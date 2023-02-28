@@ -1,46 +1,38 @@
-package com.ecommerce.userservices.dto;
+package com.ecommerce.userservices.model;
 
-import javax.persistence.*;
+import com.ecommerce.userservices.dto.RolesDTO;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDateTime;
-@Entity
-@Table(schema="ecommerce", name ="user_login")
-public class UserLoginDTO {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(name="user_name",unique = true, nullable = false, length = 100)
-    private String userName;
-    @Column(name="user_password" , nullable = false, length = 100)
-    private String password;
-    @Column(name="user_email")
-    private String email;
-    @Column(name ="created_at")
-    private LocalDateTime createdAt;
-    @Column(name ="last_login")
-    private LocalDateTime lastLogin;
-    @Column(name ="is_active")
-    private boolean isActive;
-    @ManyToOne(fetch =FetchType.LAZY, optional = false)
-    @JoinColumn(name = "role_id", referencedColumnName = "id")
-    private RolesDTO rolesDTO;
-    @OneToOne(fetch = FetchType.LAZY, optional =false)
-    @JoinColumn(name = "user_details_id", referencedColumnName = "id")
-     private UserDetailsDTO userDetailsDTO;
 
-    public UserLoginDTO() {
+public class UserLogin {
+    private Long id;
+    private String userName;
+    private String password;
+    private String email;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
+    private LocalDateTime createdAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
+    private LocalDateTime lastLogin;
+    private boolean isActive;
+    private String roleName;
+    private String userId;
+
+    public UserLogin() {
     }
 
-    public UserLoginDTO(String userName, String password, String email, LocalDateTime createdAt, LocalDateTime lastLogin, boolean isActive, RolesDTO rolesDTO, UserDetailsDTO userDetailsDTO) {
+    public UserLogin(Long id, String userName, String password, String email, LocalDateTime createdAt,
+                     LocalDateTime lastLogin, boolean isActive, String roleName, String userId) {
+        this.id = id;
         this.userName = userName;
         this.password = password;
         this.email = email;
         this.createdAt = createdAt;
         this.lastLogin = lastLogin;
         this.isActive = isActive;
-        this.rolesDTO = rolesDTO;
-        this.userDetailsDTO = userDetailsDTO;
+        this.roleName = roleName;
+        this.userId = userId;
     }
-
 
     public Long getId() {
         return id;
@@ -98,21 +90,19 @@ public class UserLoginDTO {
         isActive = active;
     }
 
-    public RolesDTO getRolesDTO() {
-        return rolesDTO;
+    public String getRoleName() {
+        return roleName;
     }
 
-    public void setRolesDTO(RolesDTO rolesDTO) {
-        this.rolesDTO = rolesDTO;
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 
-    public UserDetailsDTO getUserDetailsDTO() {
-        return userDetailsDTO;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUserDetailsDTO(UserDetailsDTO userDetailsDTO) {
-        this.userDetailsDTO = userDetailsDTO;
+    public void setUserDetailsName(String userDetailsName) {
+        userId = userId;
     }
 }
-
-

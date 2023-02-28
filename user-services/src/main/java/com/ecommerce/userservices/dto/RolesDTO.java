@@ -1,6 +1,7 @@
 package com.ecommerce.userservices.dto;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(schema="ecommerce", name="user_roles")
@@ -12,6 +13,8 @@ public class RolesDTO {
     private String roleName;
     @Column(name = "role_description")
     private String roleDescription;
+    @OneToMany(mappedBy="rolesDTO", cascade = CascadeType.ALL, fetch =FetchType.LAZY)
+    private List<UserLoginDTO> userLoginDTOList;
 
     public RolesDTO() {
     }
@@ -44,4 +47,4 @@ public class RolesDTO {
     public void setRoleDescription(String roleDescription) {
         this.roleDescription = roleDescription;
     }
-}
+    }

@@ -4,7 +4,6 @@ public class UpdateRolesRequest {
     private Long id;
     private String roleName;
     private String roleDescription;
-
     public UpdateRolesRequest() {
     }
 
