@@ -1,6 +1,9 @@
 package com.ecommerce.productservices.security.filter;
 
 
+import com.ecommerce.productservices.config.APIConfig;
+import com.ecommerce.productservices.config.AppConfig;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -22,9 +25,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@AllArgsConstructor
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
     //@Autowired
-    //private RestTemplate restTemplate;
+    private RestTemplate restTemplate;
+    private APIConfig apiConfig;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -38,13 +43,15 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
         String token = header.replace("Bearer ", ""); // JWT token
 
-        RestTemplate restTemplate = new RestTemplate();
+        //RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders httpHeaders = new HttpHeaders();
         //httpHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
         httpHeaders.set("Authorization", header);
         HttpEntity<String> entity = new HttpEntity<String>(httpHeaders);
         //restTemplate.exchange("localhost:9897/validateToken", HttpMethod.GET,entity, List.class).getBody();
+
+        System.out.println(apiConfig.getAuthBaseURL());
 
         String output = restTemplate.exchange("http://localhost:9897/validateToken", HttpMethod.GET,entity, String.class).getBody();
         System.out.println(output);

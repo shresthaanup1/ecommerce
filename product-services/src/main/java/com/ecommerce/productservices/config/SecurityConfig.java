@@ -3,6 +3,7 @@ package com.ecommerce.productservices.config;
 import com.ecommerce.productservices.security.filter.ExceptionHandlerFilter;
 import com.ecommerce.productservices.security.filter.JWTAuthorizationFilter;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -15,6 +16,10 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 @AllArgsConstructor
 public class SecurityConfig {
+
+
+    private APIConfig apiConfig;
+    private RestTemplate restTemplate;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -27,7 +32,7 @@ public class SecurityConfig {
                 .addFilterBefore(new ExceptionHandlerFilter(), UsernamePasswordAuthenticationFilter.class)
                 //.addFilter(authenticationFilter)
                 //.addFilterAfter(new JWTAuthorizationFilter(), AuthenticationFilter.class)
-                .addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(new JWTAuthorizationFilter(restTemplate,apiConfig), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         return http.build();
     }
