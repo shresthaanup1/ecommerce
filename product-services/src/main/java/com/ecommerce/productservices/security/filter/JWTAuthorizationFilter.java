@@ -11,6 +11,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.client.RestTemplate;
@@ -60,7 +62,16 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         if(output.equals("Token is fine.")){
             //get user from token
             String user = restTemplate.exchange("http://localhost:9897/getUserFromToken", HttpMethod.GET,entity, String.class).getBody();
-            Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+
+            List<GrantedAuthority> authorities = new ArrayList<>();
+
+            if(user.equals("admin")) {
+                authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+            }else if (user.equals("user")){
+                authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+            }
+
+            Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         else {
