@@ -1,12 +1,22 @@
 package com.ecommerce.userservices.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class UpdateRolesRequest {
     private Long id;
     private String roleName;
     private String roleDescription;
+
+/*
     public UpdateRolesRequest() {
     }
-
     public UpdateRolesRequest(Long id, String roleName, String roleDescription) {
         this.id = id;
         this.roleName = roleName;
@@ -36,4 +46,5 @@ public class UpdateRolesRequest {
     public void setRoleDescription(String roleDescription) {
         this.roleDescription = roleDescription;
     }
+*/
 }

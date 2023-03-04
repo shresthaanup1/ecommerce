@@ -1,7 +1,15 @@
 package com.ecommerce.userservices.model;
 
-import java.time.LocalDate;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.time.LocalDate;
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class UpdateUserDetailsRequest {
     private Long id;
     private String userId;
@@ -10,7 +18,7 @@ public class UpdateUserDetailsRequest {
     private String lastName;
     private LocalDate dateOfBirth;
     private String address;
-
+/*
     public UpdateUserDetailsRequest() {
     }
 
@@ -79,4 +87,5 @@ public class UpdateUserDetailsRequest {
     public void setAddress(String address) {
         this.address = address;
     }
+ */
 }

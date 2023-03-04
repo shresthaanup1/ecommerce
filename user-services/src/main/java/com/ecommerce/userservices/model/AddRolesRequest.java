@@ -1,13 +1,22 @@
 package com.ecommerce.userservices.model;
 
-import javax.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class AddRolesRequest {
     @NotBlank(message = "Role name should be blank")
     private String roleName;
     @NotBlank(message = "Role description should be blank")
     private String roleDescription;
 
+/*
     public AddRolesRequest() {
     }
 
@@ -30,5 +39,5 @@ public class AddRolesRequest {
 
     public void setRoleDescription(String roleDescription) {
         this.roleDescription = roleDescription;
-    }
+    }*/
 }

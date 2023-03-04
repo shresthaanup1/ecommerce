@@ -7,6 +7,7 @@ import com.ecommerce.userservices.exception.RolesNotFoundException;
 import com.ecommerce.userservices.model.AddRolesRequest;
 import com.ecommerce.userservices.model.Roles;
 import com.ecommerce.userservices.model.UpdateRolesRequest;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +16,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class RolesServiceImpl implements RolesService {
-    @Autowired
-    private RolesDAO rolesDAO;
+
+    private final RolesDAO rolesDAO;
 
     @Override
     public Roles addRoles(AddRolesRequest addRolesRequest) {
@@ -151,3 +153,4 @@ public class RolesServiceImpl implements RolesService {
         }
     }
 }
+
