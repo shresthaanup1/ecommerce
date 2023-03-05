@@ -2,9 +2,16 @@ package com.ecommerce.userservices.model;
 
 import com.ecommerce.userservices.dto.RolesDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
-
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class UserLogin {
     private Long id;
     private String userName;
@@ -17,7 +24,7 @@ public class UserLogin {
     private boolean isActive;
     private String roleName;
     private String userId;
-
+/*
     public UserLogin() {
     }
 
@@ -105,4 +112,5 @@ public class UserLogin {
     public void setUserDetailsName(String userDetailsName) {
         userId = userId;
     }
+*/
 }

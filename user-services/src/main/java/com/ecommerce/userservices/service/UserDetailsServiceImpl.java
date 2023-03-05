@@ -7,6 +7,7 @@ import com.ecommerce.userservices.exception.RolesNotFoundException;
 import com.ecommerce.userservices.model.AddUserDetailsRequest;
 import com.ecommerce.userservices.model.UpdateUserDetailsRequest;
 import com.ecommerce.userservices.model.UserDetails;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +18,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@AllArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
-    @Autowired
-    private UserDetailsDAO userDetailsDAO;
+    private  final UserDetailsDAO userDetailsDAO;
 
     @Override
     public UserDetails addUserDetails(AddUserDetailsRequest addUserDetailsRequest) {

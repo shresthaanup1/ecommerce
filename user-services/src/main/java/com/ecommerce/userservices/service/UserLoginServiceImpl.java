@@ -11,6 +11,7 @@ import com.ecommerce.userservices.exception.RolesNotFoundException;
 import com.ecommerce.userservices.model.AddUserLoginRequest;
 import com.ecommerce.userservices.model.UpdateUserLoginRequest;
 import com.ecommerce.userservices.model.UserLogin;
+import lombok.AllArgsConstructor;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,13 +23,12 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@AllArgsConstructor
 public class UserLoginServiceImpl implements UserloginService {
-    @Autowired
-    private UserLoginDAO userLoginDAO;
-    @Autowired
-    private RolesDAO rolesDAO;
-    @Autowired
-    private UserDetailsDAO userDetailsDAO;
+
+    private final UserLoginDAO userLoginDAO;
+    private final RolesDAO rolesDAO;
+    private  final UserDetailsDAO userDetailsDAO;
 
     @Override
     public UserLogin addUserLogin(AddUserLoginRequest addUserLoginRequest) {
@@ -40,23 +40,23 @@ public class UserLoginServiceImpl implements UserloginService {
         UserDetailsDTO userDetailsDTO = UserLoginServiceImpl.unwrapUserDetailsDTO(optionalUserDetailsDTO, addUserLoginRequest.getUserId());
 
         UserLoginDTO userLoginDTO = new UserLoginDTO(addUserLoginRequest.getUserName(),
-                                                    addUserLoginRequest.getPassword(),
-                                                    addUserLoginRequest.getEmail(),
-                                                    LocalDateTime.now(),
-                                                    LocalDateTime.now(),
-                                                    addUserLoginRequest.isActive(),
-                                                    rolesDTO,
-                                                    userDetailsDTO);
+                addUserLoginRequest.getPassword(),
+                addUserLoginRequest.getEmail(),
+                LocalDateTime.now(),
+                LocalDateTime.now(),
+                addUserLoginRequest.isActive(),
+                rolesDTO,
+                userDetailsDTO);
         userLoginDTO = userLoginDAO.save(userLoginDTO);
         return new UserLogin(userLoginDTO.getId(),
-                            userLoginDTO.getUserName(),
-                            userLoginDTO.getPassword(),
-                            userLoginDTO.getEmail(),
-                            userLoginDTO.getCreatedAt(),
-                            userLoginDTO.getLastLogin(),
-                            userLoginDTO.isActive(),
-                            userLoginDTO.getRolesDTO().getRoleName(),
-                            userLoginDTO.getUserDetailsDTO().getUserId());
+                userLoginDTO.getUserName(),
+                userLoginDTO.getPassword(),
+                userLoginDTO.getEmail(),
+                userLoginDTO.getCreatedAt(),
+                userLoginDTO.getLastLogin(),
+                userLoginDTO.isActive(),
+                userLoginDTO.getRolesDTO().getRoleName(),
+                userLoginDTO.getUserDetailsDTO().getUserId());
     }
 
     @Override
@@ -66,14 +66,14 @@ public class UserLoginServiceImpl implements UserloginService {
 
         for (UserLoginDTO userLoginDTO : userLoginDTOs) {
             UserLogin userLogin = new UserLogin(userLoginDTO.getId(),
-                                userLoginDTO.getUserName(),
-                                userLoginDTO.getPassword(),
-                                userLoginDTO.getEmail(),
-                                userLoginDTO.getCreatedAt(),
-                                userLoginDTO.getLastLogin(),
-                                userLoginDTO.isActive(),
-                                userLoginDTO.getRolesDTO().getRoleName(),
-                                userLoginDTO.getUserDetailsDTO().getUserId());
+                    userLoginDTO.getUserName(),
+                    userLoginDTO.getPassword(),
+                    userLoginDTO.getEmail(),
+                    userLoginDTO.getCreatedAt(),
+                    userLoginDTO.getLastLogin(),
+                    userLoginDTO.isActive(),
+                    userLoginDTO.getRolesDTO().getRoleName(),
+                    userLoginDTO.getUserDetailsDTO().getUserId());
             userLogins.add(userLogin);
         }
         return userLogins;
@@ -87,14 +87,14 @@ public class UserLoginServiceImpl implements UserloginService {
             UserLoginDTO userLoginDTO = optionalUserLoginDTO.get();
 
             UserLogin userLogin = new UserLogin(userLoginDTO.getId(),
-                                        userLoginDTO.getUserName(),
-                                        userLoginDTO.getPassword(),
-                                        userLoginDTO.getEmail(),
-                                        userLoginDTO.getCreatedAt(),
-                                        userLoginDTO.getLastLogin(),
-                                        userLoginDTO.isActive(),
-                                        userLoginDTO.getRolesDTO().getRoleName(),
-                                        userLoginDTO.getUserDetailsDTO().getUserId());
+                    userLoginDTO.getUserName(),
+                    userLoginDTO.getPassword(),
+                    userLoginDTO.getEmail(),
+                    userLoginDTO.getCreatedAt(),
+                    userLoginDTO.getLastLogin(),
+                    userLoginDTO.isActive(),
+                    userLoginDTO.getRolesDTO().getRoleName(),
+                    userLoginDTO.getUserDetailsDTO().getUserId());
             return userLogin;
         }
         return null;
@@ -119,24 +119,24 @@ public class UserLoginServiceImpl implements UserloginService {
 
             Optional<UserDetailsDTO> optionalUserDetailsDTO = userDetailsDAO.findByUserId(updateUserLoginRequest.getUserId());
             UserDetailsDTO userDetailsDTO = UserLoginServiceImpl.unwrapUserDetailsDTO(optionalUserDetailsDTO, updateUserLoginRequest.getUserId());
-                                    userLoginDTO.setUserName(updateUserLoginRequest.getUserName());
-                                    userLoginDTO.setPassword(updateUserLoginRequest.getPassword());
-                                    userLoginDTO.setEmail(updateUserLoginRequest.getEmail());
-                                    userLoginDTO.setCreatedAt(LocalDateTime.now());
-                                    userLoginDTO.setLastLogin(LocalDateTime.now());
-                                    userLoginDTO.setActive(updateUserLoginRequest.getIsActive());
-                                    userLoginDTO.setRolesDTO(rolesDTO);
-                                    userLoginDTO.setUserDetailsDTO(userDetailsDTO);
-            userLoginDTO = userLoginDAO.save(userLoginDTO);
+                    userLoginDTO.setUserName(updateUserLoginRequest.getUserName());
+                    userLoginDTO.setPassword(updateUserLoginRequest.getPassword());
+                    userLoginDTO.setEmail(updateUserLoginRequest.getEmail());
+                    userLoginDTO.setCreatedAt(LocalDateTime.now());
+                    userLoginDTO.setLastLogin(LocalDateTime.now());
+                    userLoginDTO.setActive(updateUserLoginRequest.getIsActive());
+                    userLoginDTO.setRolesDTO(rolesDTO);
+                    userLoginDTO.setUserDetailsDTO(userDetailsDTO);
+                    userLoginDTO = userLoginDAO.save(userLoginDTO);
             return new UserLogin(userLoginDTO.getId(),
-                                userLoginDTO.getUserName(),
-                                userLoginDTO.getPassword(),
-                                userLoginDTO.getEmail(),
-                                userLoginDTO.getCreatedAt(),
-                                userLoginDTO.getLastLogin(),
-                                userLoginDTO.isActive(),
-                                userLoginDTO.getRolesDTO().getRoleName(),
-                                userLoginDTO.getUserDetailsDTO().getUserId());
+                    userLoginDTO.getUserName(),
+                    userLoginDTO.getPassword(),
+                    userLoginDTO.getEmail(),
+                    userLoginDTO.getCreatedAt(),
+                    userLoginDTO.getLastLogin(),
+                    userLoginDTO.isActive(),
+                    userLoginDTO.getRolesDTO().getRoleName(),
+                    userLoginDTO.getUserDetailsDTO().getUserId());
         } else {
             throw new JsonParameterNotValidException("id");
         }
@@ -177,14 +177,14 @@ public class UserLoginServiceImpl implements UserloginService {
             }
             userLoginDTO = userLoginDAO.save(userLoginDTO);
             return new UserLogin(userLoginDTO.getId(),
-                                userLoginDTO.getUserName(),
-                                userLoginDTO.getPassword(),
-                                userLoginDTO.getEmail(),
-                                userLoginDTO.getCreatedAt(),
-                                userLoginDTO.getLastLogin(),
-                                userLoginDTO.isActive(),
-                                userLoginDTO.getRolesDTO().getRoleName(),
-                                userLoginDTO.getUserDetailsDTO().getUserId());
+                    userLoginDTO.getUserName(),
+                    userLoginDTO.getPassword(),
+                    userLoginDTO.getEmail(),
+                    userLoginDTO.getCreatedAt(),
+                    userLoginDTO.getLastLogin(),
+                    userLoginDTO.isActive(),
+                    userLoginDTO.getRolesDTO().getRoleName(),
+                    userLoginDTO.getUserDetailsDTO().getUserId());
         } else {
             throw new JsonParameterNotValidException("id");
         }

@@ -1,7 +1,13 @@
 package com.ecommerce.userservices.model;
 
+import lombok.*;
+
 import java.time.LocalDate;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class UserDetails {
     private Long id;
     private String userId;
@@ -11,6 +17,7 @@ public class UserDetails {
     private LocalDate dateOfBirth;
     private String address;
 
+ /*
     public UserDetails() {
     }
 
@@ -70,5 +77,5 @@ public class UserDetails {
 
     public void setAddress(String address) {
         this.address = address;
-    }
+    }*/
 }

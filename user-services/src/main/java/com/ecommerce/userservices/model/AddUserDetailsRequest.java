@@ -1,14 +1,22 @@
 package com.ecommerce.userservices.model;
 
-import java.time.LocalDate;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.time.LocalDate;
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class AddUserDetailsRequest {
     private String firstName;
     private String middleName;
     private String lastName;
     private LocalDate dateOfBirth;
     private String address;
-
+/*
     public AddUserDetailsRequest() {
     }
 
@@ -53,5 +61,5 @@ public class AddUserDetailsRequest {
     }
     public void setAddress(String address) {
         this.address = address;
-    }
+    }*/
 }

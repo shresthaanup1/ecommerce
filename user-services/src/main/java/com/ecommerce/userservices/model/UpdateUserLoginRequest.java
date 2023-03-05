@@ -1,8 +1,13 @@
 package com.ecommerce.userservices.model;
 
+import lombok.*;
+
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
-
+@NoArgsConstructor
+@AllArgsConstructor
+@Setter
+@Getter
 public class UpdateUserLoginRequest {
 
     private Long id;
@@ -13,12 +18,11 @@ public class UpdateUserLoginRequest {
     private String email;
     private LocalDateTime createdAt;
     private LocalDateTime lastLogin;
-
     private boolean isActive;
     private Long roleId;
     private String userId;
 
-    public UpdateUserLoginRequest() {
+   /* public UpdateUserLoginRequest() {
     }
 
     public UpdateUserLoginRequest(Long id, String userName, String password, String email, LocalDateTime createdAt, LocalDateTime lastLogin, boolean isActive, Long roleId, String userId) {
@@ -32,7 +36,7 @@ public class UpdateUserLoginRequest {
         this.roleId = roleId;
         this.userId = userId;
     }
-
+*/
     public Long getId() {
         return id;
     }

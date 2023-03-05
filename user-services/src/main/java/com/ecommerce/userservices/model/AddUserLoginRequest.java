@@ -1,9 +1,17 @@
 package com.ecommerce.userservices.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
-
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class AddUserLoginRequest {
 
     @NotBlank(message="Username should not be blank.")
@@ -17,7 +25,7 @@ public class AddUserLoginRequest {
     private boolean isActive;
     private Long roleId;
     private String userId;
-
+/*
     public AddUserLoginRequest() {
     }
 
@@ -94,5 +102,5 @@ public class AddUserLoginRequest {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
+    }*/
 }
