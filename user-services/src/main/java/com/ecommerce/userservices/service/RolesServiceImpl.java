@@ -7,6 +7,7 @@ import com.ecommerce.userservices.exception.RolesNotFoundException;
 import com.ecommerce.userservices.model.AddRolesRequest;
 import com.ecommerce.userservices.model.Roles;
 import com.ecommerce.userservices.model.UpdateRolesRequest;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,23 +16,33 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class RolesServiceImpl implements RolesService {
-    @Autowired
-    private RolesDAO rolesDAO;
+
+    private final RolesDAO rolesDAO;
 
     @Override
     public Roles addRoles(AddRolesRequest addRolesRequest) {
-        RolesDTO rolesDTO = new RolesDTO(addRolesRequest.getRoleName(), addRolesRequest.getRoleDescription());
+
+        RolesDTO rolesDTO = new RolesDTO(addRolesRequest.getRoleName(),
+                                        addRolesRequest.getRoleDescription());
+
         rolesDTO = rolesDAO.save(rolesDTO);
-        return new Roles(rolesDTO.getId(), rolesDTO.getRoleName(), rolesDTO.getRoleDescription());
+
+        return new Roles(rolesDTO.getId(),
+                         rolesDTO.getRoleName(),
+                         rolesDTO.getRoleDescription());
     }
 
     @Override
     public List<Roles> listRoles() {
         List<RolesDTO> rolesDTOs = rolesDAO.findAll();
         List<Roles> roles = new ArrayList<>();
+
         for (RolesDTO rolesDTO : rolesDTOs) {
-            roles.add(new Roles(rolesDTO.getId(), rolesDTO.getRoleName(), rolesDTO.getRoleDescription()));
+            roles.add(new Roles(rolesDTO.getId(),
+                                rolesDTO.getRoleName(),
+                                rolesDTO.getRoleDescription()));
         }
         return roles;
     }
@@ -39,9 +50,13 @@ public class RolesServiceImpl implements RolesService {
     @Override
     public Roles getRolesById(Long id) {
         Optional<RolesDTO> optionalrolesDTO = rolesDAO.findById(id);
+
         if (optionalrolesDTO.isPresent()) {
             RolesDTO rolesDTO = optionalrolesDTO.get();
-           Roles roles = new Roles(rolesDTO.getId(), rolesDTO.getRoleName(), rolesDTO.getRoleDescription());
+
+           Roles roles = new Roles(rolesDTO.getId(),
+                                   rolesDTO.getRoleName(),
+                                   rolesDTO.getRoleDescription());
            return roles;
         }else{
             throw new RolesNotFoundException(id);
@@ -76,12 +91,18 @@ public class RolesServiceImpl implements RolesService {
 
         // copy value from request body to objecgt from the database
         Optional<RolesDTO> optionalRolesDTO = rolesDAO.findById(updateRolesRequest.getId());
+
         if (optionalRolesDTO.isPresent()) {
             RolesDTO rolesDTO = optionalRolesDTO.get();
             rolesDTO.setRoleName(updateRolesRequest.getRoleName());
             rolesDTO.setRoleDescription(updateRolesRequest.getRoleDescription());
+
             rolesDTO = rolesDAO.save(rolesDTO);
-            Roles updatedroles = new Roles(rolesDTO.getId(), rolesDTO.getRoleName(), rolesDTO.getRoleDescription());
+
+            Roles updatedroles = new Roles(rolesDTO.getId(),
+                                          rolesDTO.getRoleName(),
+                                          rolesDTO.getRoleDescription());
+
             return updatedroles;
         } else {
             throw new RolesNotFoundException(updateRolesRequest.getId());
@@ -97,10 +118,13 @@ public class RolesServiceImpl implements RolesService {
 
     @Override
     public Roles patchRoles(UpdateRolesRequest updateRolesRequest) {
+
         if(updateRolesRequest.getId() !=null){
         Optional<RolesDTO> optionalRolesDTO = rolesDAO.findById(updateRolesRequest.getId());
+
         if (optionalRolesDTO.isPresent()) {
             RolesDTO rolesDTO = optionalRolesDTO.get();
+
             if(updateRolesRequest.getRoleName()!= null) {
                 rolesDTO.setRoleName(updateRolesRequest.getRoleName());
             }
@@ -108,7 +132,10 @@ public class RolesServiceImpl implements RolesService {
                 rolesDTO.setRoleDescription(updateRolesRequest.getRoleDescription());
             }
             rolesDTO = rolesDAO.save(rolesDTO);
-            Roles updatedroles = new Roles(rolesDTO.getId(), rolesDTO.getRoleName(), rolesDTO.getRoleDescription());
+            Roles updatedroles = new Roles(rolesDTO.getId(),
+                                          rolesDTO.getRoleName(),
+                                          rolesDTO.getRoleDescription());
+
             return updatedroles;
         }
        else{
@@ -118,4 +145,12 @@ public class RolesServiceImpl implements RolesService {
           throw new JsonParameterNotValidException("id");
         }
     }
+    public static RolesDTO unwrapRolesDTO(Optional<RolesDTO> entity, Long Id) {
+        if(entity.isPresent()) {
+            return entity.get();
+        }else{
+            throw new RolesNotFoundException(Id);
+        }
+    }
 }
+
