@@ -1,0 +1,23 @@
+admin:
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY3NzgwNDA2NH0.n3iG_oaWCQheOq8V81KYh8PDGcUDosYEPFPp7Mea6TOqxdqQrSlmxIVQJ1YTo4miLZd7_BJU6p0AbNsDLgUZQQ
+
+user:
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiZXhwIjoxNjc3ODAzNjgxfQ.ZNOv5Y2K-lngj1RaRENsPwKaD_jATXwHNMzOviWTlXYqs1VmB_o_1SY_Tc6iqtPvA0Bb8HhYujhqRL4OvOtDPA
+
+add roles within the token.
+
+
+-- output for the auth-service
+
+1. /authenticate link for the authentication is not working.
+2. /getUserFromToken while passing expired token we get com.auth0.jwt.exceptions.TokenExpiredException exception.
+	We need to handle this exception in the getUsernameFromJwtToken method of the JWTUtility.
+3. /getUserFromToken org.springframework.web.bind.MissingRequestHeaderException exception if we don't provide any header.
+4. /validateToken org.springframework.web.bind.MissingRequestHeaderException exception if we don't provide any header.
+
+
+-- output for the user-service
+1. Exception and validation needs to be added.
+
+
+
