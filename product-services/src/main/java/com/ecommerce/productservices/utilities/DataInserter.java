@@ -34,6 +34,7 @@ public class DataInserter {
                 new AddProductRequest("PName2",200.0,true,true, LocalDateTime.now(),2L),
                 new AddProductRequest("PName3",300.0,true,true, LocalDateTime.now(),3L),
                 new AddProductRequest("PName4",400.0,true,true, LocalDateTime.now(),4L),
+                new AddProductRequest("PName5",450.0,true,true, LocalDateTime.now(),1L)
         };
 
         for(AddProductRequest addProductRequest:products){
