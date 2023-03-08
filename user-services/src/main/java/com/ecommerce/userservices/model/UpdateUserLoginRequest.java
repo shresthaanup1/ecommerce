@@ -20,7 +20,7 @@ public class UpdateUserLoginRequest {
     private LocalDateTime lastLogin;
     private boolean isActive;
     private Long roleId;
-    private String userId;
+    private Long userId;
 
    /* public UpdateUserLoginRequest() {
     }
@@ -93,10 +93,10 @@ public class UpdateUserLoginRequest {
         this.roleId = roleId;
     }
 
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
-    public void setUserId(String userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 }

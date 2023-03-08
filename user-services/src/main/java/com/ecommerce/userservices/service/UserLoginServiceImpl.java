@@ -8,6 +8,7 @@ import com.ecommerce.userservices.dto.UserDetailsDTO;
 import com.ecommerce.userservices.dto.UserLoginDTO;
 import com.ecommerce.userservices.exception.JsonParameterNotValidException;
 import com.ecommerce.userservices.exception.RolesNotFoundException;
+import com.ecommerce.userservices.exception.UserDetailsNotFoundException;
 import com.ecommerce.userservices.model.AddUserLoginRequest;
 import com.ecommerce.userservices.model.UpdateUserLoginRequest;
 import com.ecommerce.userservices.model.UserLogin;
@@ -33,30 +34,35 @@ public class UserLoginServiceImpl implements UserloginService {
     @Override
     public UserLogin addUserLogin(AddUserLoginRequest addUserLoginRequest) {
 
-        Optional<RolesDTO> optionalRolesDTO = rolesDAO.findById(addUserLoginRequest.getRoleId());
-        RolesDTO rolesDTO = RolesServiceImpl.unwrapRolesDTO(optionalRolesDTO, addUserLoginRequest.getRoleId());
+            Optional<RolesDTO> optionalRolesDTO = rolesDAO.findById(addUserLoginRequest.getRoleId());
+            RolesDTO rolesDTO = RolesServiceImpl.unwrapRolesDTO(optionalRolesDTO, addUserLoginRequest.getRoleId());
 
-        Optional<UserDetailsDTO> optionalUserDetailsDTO = userDetailsDAO.findByUserId(addUserLoginRequest.getUserId());
-        UserDetailsDTO userDetailsDTO = UserLoginServiceImpl.unwrapUserDetailsDTO(optionalUserDetailsDTO, addUserLoginRequest.getUserId());
+            Optional<UserDetailsDTO> optionalUserDetailsDTO = userDetailsDAO.findById(addUserLoginRequest.getUserId());
+            //if user details does not exist then throw error
+            if (optionalUserDetailsDTO.isPresent()) {
+                UserDetailsDTO userDetailsDTO = UserLoginServiceImpl.unwrapUserDetailsDTO(optionalUserDetailsDTO, addUserLoginRequest.getUserId());
 
-        UserLoginDTO userLoginDTO = new UserLoginDTO(addUserLoginRequest.getUserName(),
-                addUserLoginRequest.getPassword(),
-                addUserLoginRequest.getEmail(),
-                LocalDateTime.now(),
-                LocalDateTime.now(),
-                addUserLoginRequest.isActive(),
-                rolesDTO,
-                userDetailsDTO);
-        userLoginDTO = userLoginDAO.save(userLoginDTO);
-        return new UserLogin(userLoginDTO.getId(),
-                userLoginDTO.getUserName(),
-                userLoginDTO.getPassword(),
-                userLoginDTO.getEmail(),
-                userLoginDTO.getCreatedAt(),
-                userLoginDTO.getLastLogin(),
-                userLoginDTO.isActive(),
-                userLoginDTO.getRolesDTO().getRoleName(),
-                userLoginDTO.getUserDetailsDTO().getUserId());
+                UserLoginDTO userLoginDTO = new UserLoginDTO(addUserLoginRequest.getUserName(),
+                        addUserLoginRequest.getPassword(),
+                        addUserLoginRequest.getEmail(),
+                        LocalDateTime.now(),
+                        LocalDateTime.now(),
+                        addUserLoginRequest.isActive(),
+                        rolesDTO,
+                        userDetailsDTO);
+                userLoginDTO = userLoginDAO.save(userLoginDTO);
+                return new UserLogin(userLoginDTO.getId(),
+                        userLoginDTO.getUserName(),
+                        userLoginDTO.getPassword(),
+                        userLoginDTO.getEmail(),
+                        userLoginDTO.getCreatedAt(),
+                        userLoginDTO.getLastLogin(),
+                        userLoginDTO.isActive(),
+                        userLoginDTO.getRolesDTO().getRoleName(),
+                        userLoginDTO.getUserDetailsDTO().getId()); // we are returning from user details
+            }else{
+                throw new UserDetailsNotFoundException(addUserLoginRequest.getUserId());
+            }
     }
 
     @Override
@@ -73,7 +79,7 @@ public class UserLoginServiceImpl implements UserloginService {
                     userLoginDTO.getLastLogin(),
                     userLoginDTO.isActive(),
                     userLoginDTO.getRolesDTO().getRoleName(),
-                    userLoginDTO.getUserDetailsDTO().getUserId());
+                    userLoginDTO.getUserDetailsDTO().getId());
             userLogins.add(userLogin);
         }
         return userLogins;
@@ -94,7 +100,7 @@ public class UserLoginServiceImpl implements UserloginService {
                     userLoginDTO.getLastLogin(),
                     userLoginDTO.isActive(),
                     userLoginDTO.getRolesDTO().getRoleName(),
-                    userLoginDTO.getUserDetailsDTO().getUserId());
+                    userLoginDTO.getUserDetailsDTO().getId());
             return userLogin;
         }
         return null;
@@ -117,7 +123,7 @@ public class UserLoginServiceImpl implements UserloginService {
             Optional<RolesDTO> optionalRolesDTO = rolesDAO.findById(updateUserLoginRequest.getRoleId());
             RolesDTO rolesDTO = RolesServiceImpl.unwrapRolesDTO(optionalRolesDTO, updateUserLoginRequest.getRoleId());
 
-            Optional<UserDetailsDTO> optionalUserDetailsDTO = userDetailsDAO.findByUserId(updateUserLoginRequest.getUserId());
+            Optional<UserDetailsDTO> optionalUserDetailsDTO = userDetailsDAO.findById(updateUserLoginRequest.getUserId());
             UserDetailsDTO userDetailsDTO = UserLoginServiceImpl.unwrapUserDetailsDTO(optionalUserDetailsDTO, updateUserLoginRequest.getUserId());
                     userLoginDTO.setUserName(updateUserLoginRequest.getUserName());
                     userLoginDTO.setPassword(updateUserLoginRequest.getPassword());
@@ -136,7 +142,7 @@ public class UserLoginServiceImpl implements UserloginService {
                     userLoginDTO.getLastLogin(),
                     userLoginDTO.isActive(),
                     userLoginDTO.getRolesDTO().getRoleName(),
-                    userLoginDTO.getUserDetailsDTO().getUserId());
+                    userLoginDTO.getUserDetailsDTO().getId());
         } else {
             throw new JsonParameterNotValidException("id");
         }
@@ -171,7 +177,7 @@ public class UserLoginServiceImpl implements UserloginService {
                 userLoginDTO.setRolesDTO(rolesDTO);
             }
             if (updateuserLoginRequest.getUserId() != null) {
-                Optional<UserDetailsDTO> optionalUserDetailsDTO = userDetailsDAO.findByUserId(updateuserLoginRequest.getUserId());
+                Optional<UserDetailsDTO> optionalUserDetailsDTO = userDetailsDAO.findById(updateuserLoginRequest.getUserId());
                 UserDetailsDTO userDetailsDTO = UserLoginServiceImpl.unwrapUserDetailsDTO(optionalUserDetailsDTO, updateuserLoginRequest.getUserId());
                 userLoginDTO.setUserDetailsDTO(userDetailsDTO);
             }
@@ -184,7 +190,7 @@ public class UserLoginServiceImpl implements UserloginService {
                     userLoginDTO.getLastLogin(),
                     userLoginDTO.isActive(),
                     userLoginDTO.getRolesDTO().getRoleName(),
-                    userLoginDTO.getUserDetailsDTO().getUserId());
+                    userLoginDTO.getUserDetailsDTO().getId());
         } else {
             throw new JsonParameterNotValidException("id");
         }
@@ -196,7 +202,7 @@ public class UserLoginServiceImpl implements UserloginService {
         // else throw new RolesNotFoundException(id);
     }
 
-    private static UserDetailsDTO unwrapUserDetailsDTO(Optional<UserDetailsDTO> entity, String id) {
+    private static UserDetailsDTO unwrapUserDetailsDTO(Optional<UserDetailsDTO> entity, Long id) {
         if (entity.isPresent()) return entity.get();
         return null;
     }
