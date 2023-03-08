@@ -55,13 +55,13 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
         System.out.println(apiConfig.getAuthBaseURL());
 
-        String output = restTemplate.exchange("http://localhost:9897/validateToken", HttpMethod.GET,entity, String.class).getBody();
+        String output = restTemplate.exchange("http://localhost:9897/auth/validateToken", HttpMethod.GET,entity, String.class).getBody();
         System.out.println(output);
         //call to verify the token
 
         if(output.equals("Token is fine.")){
             //get user from token
-            String user = restTemplate.exchange("http://localhost:9897/getUserFromToken", HttpMethod.GET,entity, String.class).getBody();
+            String user = restTemplate.exchange("http://localhost:9897/auth/getUserFromToken", HttpMethod.GET,entity, String.class).getBody();
 
             List<GrantedAuthority> authorities = new ArrayList<>();
 
