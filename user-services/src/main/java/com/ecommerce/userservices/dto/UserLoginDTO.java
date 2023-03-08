@@ -38,7 +38,7 @@ public class UserLoginDTO {
     private RolesDTO rolesDTO;
     @NonNull
     @OneToOne(fetch = FetchType.LAZY, optional =false)
-    @JoinColumn(name = "user_details_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_details_id", referencedColumnName = "id",unique = true)
      private UserDetailsDTO userDetailsDTO;
 }
 

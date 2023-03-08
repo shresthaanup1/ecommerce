@@ -23,7 +23,7 @@ public class UserLogin {
     private LocalDateTime lastLogin;
     private boolean isActive;
     private String roleName;
-    private String userId;
+    private Long userId;
 /*
     public UserLogin() {
     }

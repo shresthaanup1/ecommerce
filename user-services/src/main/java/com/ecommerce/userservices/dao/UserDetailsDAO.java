@@ -8,5 +8,4 @@ import java.util.Optional;
 
 @Repository
 public interface UserDetailsDAO extends JpaRepository<UserDetailsDTO, Long>{
-    Optional<UserDetailsDTO> findByUserId(String userId);
 }

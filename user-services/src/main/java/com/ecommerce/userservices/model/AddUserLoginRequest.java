@@ -24,7 +24,7 @@ public class AddUserLoginRequest {
     @JsonProperty
     private boolean isActive;
     private Long roleId;
-    private String userId;
+    private Long userId;
 /*
     public AddUserLoginRequest() {
     }
