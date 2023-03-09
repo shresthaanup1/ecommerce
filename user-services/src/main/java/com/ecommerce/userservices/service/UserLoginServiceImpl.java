@@ -15,6 +15,7 @@ import com.ecommerce.userservices.model.UserLogin;
 import lombok.AllArgsConstructor;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -30,6 +31,8 @@ public class UserLoginServiceImpl implements UserloginService {
     private final UserLoginDAO userLoginDAO;
     private final RolesDAO rolesDAO;
     private  final UserDetailsDAO userDetailsDAO;
+    
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public UserLogin addUserLogin(AddUserLoginRequest addUserLoginRequest) {
@@ -41,9 +44,9 @@ public class UserLoginServiceImpl implements UserloginService {
             //if user details does not exist then throw error
             if (optionalUserDetailsDTO.isPresent()) {
                 UserDetailsDTO userDetailsDTO = UserLoginServiceImpl.unwrapUserDetailsDTO(optionalUserDetailsDTO, addUserLoginRequest.getUserId());
-
+                String password = bCryptPasswordEncoder.encode(addUserLoginRequest.getPassword());
                 UserLoginDTO userLoginDTO = new UserLoginDTO(addUserLoginRequest.getUserName(),
-                        addUserLoginRequest.getPassword(),
+                        password,
                         addUserLoginRequest.getEmail(),
                         LocalDateTime.now(),
                         LocalDateTime.now(),
