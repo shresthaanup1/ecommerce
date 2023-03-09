@@ -1,6 +1,8 @@
 package com.ecommerce.authservices.controller;
 
+import com.ecommerce.authservices.feignclients.CustomFeignClient;
 import com.ecommerce.authservices.model.JwtResponse;
+import com.ecommerce.authservices.model.Roles;
 import com.ecommerce.authservices.security.manager.CustomAuthenticationManager;
 import com.ecommerce.authservices.model.LoginRequest;
 import com.ecommerce.authservices.user.User;
@@ -28,6 +30,9 @@ public class AuthController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private CustomFeignClient customFeignClient;
+
 
     @PostMapping("/getToken")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
@@ -70,6 +75,12 @@ public class AuthController {
             //return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
             return ResponseEntity.ok("Token is not fine.");
         }
+    }
+
+    @GetMapping("test")
+    public ResponseEntity<?> testing(){
+        customFeignClient.getRolesById(1L);
+        return new ResponseEntity<>(customFeignClient.getRolesById(1L),HttpStatus.OK);
     }
 
 }
