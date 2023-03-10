@@ -44,4 +44,9 @@ public class UserLoginController {
     public ResponseEntity<UserLogin> patchUserLogin(@RequestBody UpdateUserLoginRequest updateuserLoginRequest){
          return new ResponseEntity<>(userloginService.patchUserLogin(updateuserLoginRequest), HttpStatus.ACCEPTED);
     }
+
+    @GetMapping(value ="/login/{userName}")
+    public ResponseEntity<UserLogin> getUserLoginByUsername(@PathVariable String userName){
+        return new ResponseEntity<>(userloginService.getUserLoginByUserName(userName), HttpStatus.OK);
+    }
 }

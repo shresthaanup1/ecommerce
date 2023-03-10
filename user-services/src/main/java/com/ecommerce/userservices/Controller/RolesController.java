@@ -26,7 +26,7 @@ public class RolesController {
     }
     @GetMapping(value ="/role/{id}")
     public ResponseEntity<Roles> getRolesById(@PathVariable Long id){
-        return new ResponseEntity<>(rolesService.getRolesById(id), HttpStatus.FOUND);
+        return new ResponseEntity<>(rolesService.getRolesById(id), HttpStatus.OK);
     }
     @DeleteMapping(value ="/role/{id}")
    public ResponseEntity<HttpStatus>deleteRolesById(@PathVariable Long id){

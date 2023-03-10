@@ -129,7 +129,7 @@ public class UserLoginServiceImpl implements UserloginService {
             Optional<UserDetailsDTO> optionalUserDetailsDTO = userDetailsDAO.findById(updateUserLoginRequest.getUserId());
             UserDetailsDTO userDetailsDTO = UserLoginServiceImpl.unwrapUserDetailsDTO(optionalUserDetailsDTO, updateUserLoginRequest.getUserId());
                     userLoginDTO.setUserName(updateUserLoginRequest.getUserName());
-                    userLoginDTO.setPassword(updateUserLoginRequest.getPassword());
+                    userLoginDTO.setPassword(bCryptPasswordEncoder.encode(updateUserLoginRequest.getPassword()));
                     userLoginDTO.setEmail(updateUserLoginRequest.getEmail());
                     userLoginDTO.setCreatedAt(LocalDateTime.now());
                     userLoginDTO.setLastLogin(LocalDateTime.now());
@@ -160,7 +160,7 @@ public class UserLoginServiceImpl implements UserloginService {
                 userLoginDTO.setUserName(updateuserLoginRequest.getUserName());
             }
             if (updateuserLoginRequest.getPassword() != null) {
-                userLoginDTO.setPassword(updateuserLoginRequest.getPassword());
+                userLoginDTO.setPassword(bCryptPasswordEncoder.encode(updateuserLoginRequest.getPassword()));
             }
             if (updateuserLoginRequest.getEmail() != null) {
                 userLoginDTO.setEmail(updateuserLoginRequest.getEmail());
@@ -197,6 +197,27 @@ public class UserLoginServiceImpl implements UserloginService {
         } else {
             throw new JsonParameterNotValidException("id");
         }
+    }
+
+    @Override
+    public UserLogin getUserLoginByUserName(String userName) {
+        Optional<UserLoginDTO> optionalUserLoginDTO = userLoginDAO.findByUserName(userName);
+
+        if (optionalUserLoginDTO.isPresent()) {
+            UserLoginDTO userLoginDTO = optionalUserLoginDTO.get();
+
+            UserLogin userLogin = new UserLogin(userLoginDTO.getId(),
+                    userLoginDTO.getUserName(),
+                    userLoginDTO.getPassword(),
+                    userLoginDTO.getEmail(),
+                    userLoginDTO.getCreatedAt(),
+                    userLoginDTO.getLastLogin(),
+                    userLoginDTO.isActive(),
+                    userLoginDTO.getRolesDTO().getRoleName(),
+                    userLoginDTO.getUserDetailsDTO().getId());
+            return userLogin;
+        }
+        return null;
     }
 
     private UserLoginDTO unwrapUserLoginDTO(Optional<UserLoginDTO> entity, Long id) {

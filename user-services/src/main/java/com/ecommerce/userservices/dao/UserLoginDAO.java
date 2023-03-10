@@ -6,9 +6,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserLoginDAO extends JpaRepository<UserLoginDTO, Long> {
     @Query(value = "SELECT * FROM user_login u WHERE u.user_details_id = ?1",nativeQuery = true)
     UserLoginDTO findByUserId(Long userId);
+
+
+   Optional <UserLoginDTO> findByUserName(String userName);
 }
