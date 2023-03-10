@@ -20,4 +20,6 @@ public interface UserloginService {
     UserLogin updateUserLogin(UpdateUserLoginRequest updateUserLoginRequest);
 
     UserLogin patchUserLogin(UpdateUserLoginRequest updateuserLoginRequest);
+
+    UserLogin getUserLoginByUserName(String userName);
 }

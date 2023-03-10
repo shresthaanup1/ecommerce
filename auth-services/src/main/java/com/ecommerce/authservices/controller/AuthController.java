@@ -77,10 +77,9 @@ public class AuthController {
         }
     }
 
-    @GetMapping("test")
-    public ResponseEntity<?> testing(){
-        customFeignClient.getRolesById(1L);
-        return new ResponseEntity<>(customFeignClient.getRolesById(1L),HttpStatus.OK);
+    @GetMapping("test/{id}")
+    public ResponseEntity<?> testing(@PathVariable Long id){
+        return new ResponseEntity<>(customFeignClient.getRolesById(id),HttpStatus.OK);
     }
 
 }

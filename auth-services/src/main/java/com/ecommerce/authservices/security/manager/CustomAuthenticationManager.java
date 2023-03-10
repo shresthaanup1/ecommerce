@@ -1,6 +1,9 @@
 package com.ecommerce.authservices.security.manager;
 
+import com.ecommerce.authservices.feignclients.CustomFeignClient;
+import com.ecommerce.authservices.model.UserLogin;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,19 +22,16 @@ public class CustomAuthenticationManager implements AuthenticationManager {
 
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    private CustomFeignClient customFeignClient;
+
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
-        InMemoryUserDetailsManager userDetailsManager = new InMemoryUserDetailsManager();
-        UserDetails user1 = User.withUsername("admin").password("test").roles("ADMIN").build();
-        UserDetails user2 = User.withUsername("user").password("test1").roles("USER").build();
-        userDetailsManager.createUser(user1);
-        userDetailsManager.createUser(user2);
-
-        UserDetails userFromDb = userDetailsManager.loadUserByUsername(authentication.getPrincipal().toString());
+        UserLogin userFromDb =customFeignClient.getUserLoginByUsername(authentication.getPrincipal().toString());
+        System.out.println(customFeignClient.getUserLoginByUsername(authentication.getPrincipal().toString()).getPassword());
 
 
-        if (!bCryptPasswordEncoder.matches(authentication.getCredentials().toString(), bCryptPasswordEncoder.encode(userFromDb.getPassword()))) {
+        if (!bCryptPasswordEncoder.matches(authentication.getCredentials().toString(), userFromDb.getPassword())) {
             throw new BadCredentialsException("You provided an incorrect password.");
         }
 
