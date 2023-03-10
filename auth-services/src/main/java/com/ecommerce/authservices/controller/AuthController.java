@@ -1,5 +1,10 @@
 package com.ecommerce.authservices.controller;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
+import com.ecommerce.authservices.exception.AuthorizationHeaderNotFoundException;
+import com.ecommerce.authservices.exception.IncorrectPasswordException;
+import com.ecommerce.authservices.exception.JsonParameterNotValidException;
 import com.ecommerce.authservices.feignclients.CustomFeignClient;
 import com.ecommerce.authservices.model.JwtResponse;
 import com.ecommerce.authservices.model.Roles;
@@ -11,11 +16,14 @@ import com.ecommerce.authservices.utilities.JWTUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -36,29 +44,48 @@ public class AuthController {
 
     @PostMapping("/getToken")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
+        if (loginRequest.getUsername() != null && loginRequest.getPassword() != null) {
 
+            Authentication authentication = new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
+            try {
+                authentication = customAuthenticationManager.authenticate(authentication);
+            } catch (BadCredentialsException e) {
+                throw new IncorrectPasswordException();
+            }
 
-        authentication = customAuthenticationManager.authenticate(authentication);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+            // Generate JWT token
+            String jwtToken = jwtUtility.generateJwtToken(authentication);
 
-        // Generate JWT token
-        String jwtToken = jwtUtility.generateJwtToken(authentication);
-
-        return ResponseEntity.ok(new JwtResponse(jwtToken));
-        //return new ResponseEntity<>(jwtToken, HttpStatus.OK);
+            return ResponseEntity.ok(new JwtResponse(jwtToken));
+        }else{
+            throw new JsonParameterNotValidException("username/password");
+        }
     }
 
     @GetMapping("/getUserFromToken")
-    public ResponseEntity<?> getUserFromToken(@RequestHeader("Authorization") String authHeader) {
-        String jwtToken = authHeader.substring(7);
-        return new ResponseEntity<>(jwtUtility.getUsernameFromJwtToken(jwtToken), HttpStatus.OK);
+    public ResponseEntity<?> getUserFromToken(@RequestHeader(value ="Authorization", required=false) String authHeader) {
+        if (authHeader != null) {
+            String jwtToken = authHeader.substring(7);
+            //first try to validate token if token is valid then only get username from token
+            try{
+                jwtUtility.validateJwtToken(jwtToken);
+            }catch (TokenExpiredException e) {
+               throw new TokenExpiredException("Token expired", Instant.now());
+            } catch (JWTVerificationException e) {
+               throw new JWTVerificationException("Invalid token");
+        }
+            return new ResponseEntity<>(jwtUtility.getUsernameFromJwtToken(jwtToken), HttpStatus.OK);
+        }else {
+            throw new AuthorizationHeaderNotFoundException();
+        }
     }
 
     @GetMapping("/validateToken")
-    public ResponseEntity<?> getUser(@RequestHeader("Authorization") String authHeader) {
+    public ResponseEntity<?> getUser(@RequestHeader(value ="Authorization", required = false) String authHeader) {
+        if (authHeader != null) {
 
         // Extract JWT token from Authorization header
         String jwtToken = authHeader.substring(7);
@@ -74,6 +101,9 @@ public class AuthController {
         } else {
             //return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
             return ResponseEntity.ok("Token is not fine.");
+        }
+        }else {
+            throw new AuthorizationHeaderNotFoundException();
         }
     }
 
