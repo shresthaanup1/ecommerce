@@ -1,5 +1,6 @@
 package com.ecommerce.productservices.config;
 
+import com.ecommerce.productservices.feignclients.CustomFeignClient;
 import com.ecommerce.productservices.security.filter.ExceptionHandlerFilter;
 import com.ecommerce.productservices.security.filter.JWTAuthorizationFilter;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,8 @@ public class SecurityConfig {
 
     private APIConfig apiConfig;
     private RestTemplate restTemplate;
+
+    private CustomFeignClient customFeignClient;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -28,14 +31,15 @@ public class SecurityConfig {
                 //.antMatchers(HttpMethod.POST).permitAll()
                 //.antMatchers(HttpMethod.GET).permitAll()
                 .antMatchers(HttpMethod.DELETE).hasRole("ADMIN")
-                .antMatchers(HttpMethod.POST).hasAnyRole("ADMIN")
+                .antMatchers(HttpMethod.POST).hasAnyRole("ADMIN","USER")
+                .antMatchers(HttpMethod.PUT).hasAnyRole("ADMIN")
                 .antMatchers(HttpMethod.GET).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new ExceptionHandlerFilter(), UsernamePasswordAuthenticationFilter.class)
                 //.addFilter(authenticationFilter)
                 //.addFilterAfter(new JWTAuthorizationFilter(), AuthenticationFilter.class)
-                .addFilterAfter(new JWTAuthorizationFilter(restTemplate,apiConfig), UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(new JWTAuthorizationFilter(restTemplate,apiConfig,customFeignClient), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         return http.build();
     }

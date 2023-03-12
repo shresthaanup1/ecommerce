@@ -3,6 +3,8 @@ package com.ecommerce.productservices.security.filter;
 
 import com.ecommerce.productservices.config.APIConfig;
 import com.ecommerce.productservices.config.AppConfig;
+import com.ecommerce.productservices.feignclients.CustomFeignClient;
+import com.ecommerce.productservices.model.UserLogin;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -32,6 +34,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
     //@Autowired
     private RestTemplate restTemplate;
     private APIConfig apiConfig;
+    private CustomFeignClient customFeignClient;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -54,24 +57,30 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         //restTemplate.exchange("localhost:9897/validateToken", HttpMethod.GET,entity, List.class).getBody();
 
         System.out.println(apiConfig.getAuthBaseURL());
+        //System.out.println(customFeignClient.getUserFromToken(header));
 
         String output = restTemplate.exchange("http://localhost:9897/auth/validateToken", HttpMethod.GET,entity, String.class).getBody();
-        System.out.println(output);
+        //System.out.println(output);
         //call to verify the token
 
         if(output.equals("Token is fine.")){
             //get user from token
-            String user = restTemplate.exchange("http://localhost:9897/auth/getUserFromToken", HttpMethod.GET,entity, String.class).getBody();
+            //String user = restTemplate.exchange("http://localhost:9897/auth/getUserFromToken", HttpMethod.GET,entity, String.class).getBody();
+
+            UserLogin user = customFeignClient.getUserFromToken(header);
+            System.out.println(user);
 
             List<GrantedAuthority> authorities = new ArrayList<>();
 
-            if(user.equals("admin")) {
-                authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-            }else if (user.equals("user")){
-                authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-            }
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRoleName().toUpperCase()));
 
-            Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
+//            if(user.equals("admin")) {
+//                authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+//            }else if (user.equals("user")){
+//                authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+//            }
+
+            Authentication authentication = new UsernamePasswordAuthenticationToken(user.getUserName(), null, authorities);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         else {
