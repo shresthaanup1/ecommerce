@@ -1,5 +1,6 @@
 package com.ecommerce.authservices.security.manager;
 
+import com.ecommerce.authservices.exception.UserDetailsNotFoundException;
 import com.ecommerce.authservices.feignclients.CustomFeignClient;
 import com.ecommerce.authservices.model.UserLogin;
 import lombok.AllArgsConstructor;
@@ -28,7 +29,12 @@ public class CustomAuthenticationManager implements AuthenticationManager {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
         UserLogin userFromDb =customFeignClient.getUserLoginByUsername(authentication.getPrincipal().toString());
-        System.out.println(customFeignClient.getUserLoginByUsername(authentication.getPrincipal().toString()).getPassword());
+
+        if(userFromDb == null){
+            throw new UserDetailsNotFoundException(authentication.getPrincipal().toString());
+        }
+
+        //System.out.println(customFeignClient.getUserLoginByUsername(authentication.getPrincipal().toString()).getPassword());
 
 
         if (!bCryptPasswordEncoder.matches(authentication.getCredentials().toString(), userFromDb.getPassword())) {

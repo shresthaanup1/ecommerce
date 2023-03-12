@@ -8,6 +8,7 @@ import com.ecommerce.authservices.exception.JsonParameterNotValidException;
 import com.ecommerce.authservices.feignclients.CustomFeignClient;
 import com.ecommerce.authservices.model.JwtResponse;
 import com.ecommerce.authservices.model.Roles;
+import com.ecommerce.authservices.model.UserLogin;
 import com.ecommerce.authservices.security.manager.CustomAuthenticationManager;
 import com.ecommerce.authservices.model.LoginRequest;
 import com.ecommerce.authservices.user.User;
@@ -77,7 +78,8 @@ public class AuthController {
             } catch (JWTVerificationException e) {
                throw new JWTVerificationException("Invalid token");
         }
-            return new ResponseEntity<>(jwtUtility.getUsernameFromJwtToken(jwtToken), HttpStatus.OK);
+            UserLogin user = customFeignClient.getUserLoginByUsername(jwtUtility.getUsernameFromJwtToken(jwtToken));
+            return new ResponseEntity<>(user, HttpStatus.OK);
         }else {
             throw new AuthorizationHeaderNotFoundException();
         }
