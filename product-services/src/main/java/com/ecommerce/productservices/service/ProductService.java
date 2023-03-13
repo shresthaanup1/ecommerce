@@ -1,6 +1,7 @@
 package com.ecommerce.productservices.service;
 
 import com.ecommerce.productservices.model.AddProductRequest;
+import com.ecommerce.productservices.model.PatchProductRequest;
 import com.ecommerce.productservices.model.Product;
 import com.ecommerce.productservices.model.UpdateProductRequest;
 
@@ -11,7 +12,7 @@ public interface ProductService {
     List<Product> listProduct();
     Product getProductById(Long id);
     Product updateProduct(UpdateProductRequest updateProductRequest);
-    Product updateProductByPatch(UpdateProductRequest updateProductRequest);
+    Product updateProductByPatch(PatchProductRequest updateProductRequest);
     void deleteProduct(Long id);
     List<Product> getCategoryProducts(Long categoryId);
 

@@ -1,6 +1,7 @@
 package com.ecommerce.productservices.controller;
 
 import com.ecommerce.productservices.model.AddProductRequest;
+import com.ecommerce.productservices.model.PatchProductRequest;
 import com.ecommerce.productservices.model.Product;
 import com.ecommerce.productservices.model.UpdateCategoryRequest;
 import com.ecommerce.productservices.model.UpdateProductRequest;
@@ -48,7 +49,7 @@ public class ProductController {
     }
 
     @PatchMapping
-    public ResponseEntity<Product> updateProductByPatch(@Valid @RequestBody UpdateProductRequest updateProductRequest) {
+    public ResponseEntity<Product> updateProductByPatch(@Valid @RequestBody PatchProductRequest updateProductRequest) {
         return new ResponseEntity<>(productService.updateProductByPatch(updateProductRequest), HttpStatus.CREATED);
     }
     @DeleteMapping(value ="/{id}")
