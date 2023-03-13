@@ -91,18 +91,23 @@ public class AuthController {
 
         // Extract JWT token from Authorization header
         String jwtToken = authHeader.substring(7);
+        try {
+            // Validate JWT token and extract username
+            if (jwtUtility.validateJwtToken(jwtToken)) {
+                String username = jwtUtility.getUsernameFromJwtToken(jwtToken);
 
-        // Validate JWT token and extract username
-        if (jwtUtility.validateJwtToken(jwtToken)) {
-            String username = jwtUtility.getUsernameFromJwtToken(jwtToken);
-
-            // Retrieve user details and return response
-            //User user = userService.getUserByUserName(username);`
-            //return ResponseEntity.ok(user);
-            return ResponseEntity.ok("Token is fine.");
-        } else {
-            //return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-            return ResponseEntity.ok("Token is not fine.");
+                // Retrieve user details and return response
+                //User user = userService.getUserByUserName(username);`
+                //return ResponseEntity.ok(user);
+                return ResponseEntity.ok("Token is fine.");
+            } else {
+                //return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+                return ResponseEntity.ok("Token is not fine.");
+            }
+        }catch (TokenExpiredException e) {
+            throw new TokenExpiredException("Token expired", Instant.now());
+        } catch (JWTVerificationException e) {
+            throw new JWTVerificationException("Invalid Token");
         }
         }else {
             throw new AuthorizationHeaderNotFoundException();

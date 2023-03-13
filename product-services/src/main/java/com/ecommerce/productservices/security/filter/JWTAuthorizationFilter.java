@@ -48,22 +48,16 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
         String token = header.replace("Bearer ", ""); // JWT token
 
-        //RestTemplate restTemplate = new RestTemplate();
-
         HttpHeaders httpHeaders = new HttpHeaders();
-        //httpHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
         httpHeaders.set("Authorization", header);
         HttpEntity<String> entity = new HttpEntity<String>(httpHeaders);
-        //restTemplate.exchange("localhost:9897/validateToken", HttpMethod.GET,entity, List.class).getBody();
 
-        System.out.println(apiConfig.getAuthBaseURL());
-        //System.out.println(customFeignClient.getUserFromToken(header));
+        try {
+            String output = restTemplate.exchange("http://localhost:9897/auth/validateToken", HttpMethod.GET, entity, String.class).getBody();
+           // System.out.println("output:" + output);
 
-        String output = restTemplate.exchange("http://localhost:9897/auth/validateToken", HttpMethod.GET,entity, String.class).getBody();
-        //System.out.println(output);
-        //call to verify the token
-
-        if(output.equals("Token is fine.")){
+           //call to verify the token
+            if(output.equals("Token is fine.")){
             //get user from token
             //String user = restTemplate.exchange("http://localhost:9897/auth/getUserFromToken", HttpMethod.GET,entity, String.class).getBody();
 
@@ -83,17 +77,9 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             Authentication authentication = new UsernamePasswordAuthenticationToken(user.getUserName(), null, authorities);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
-        else {
-            throw new RuntimeException("invalid token.");
+        }catch(RuntimeException e){
+               throw new RuntimeException("Sorry! Invalid token");
         }
-
-        //Create authentication object to set in Application Context
-        //this is wrong constructor which may throw null pointer exception
-       //  Authentication authentication = new UsernamePasswordAuthenticationToken(user, null);
-        //Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
-        //SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        //After successful authentication we go to next filter which is operation requested by client
         filterChain.doFilter(request, response);
 
 
