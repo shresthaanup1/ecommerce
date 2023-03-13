@@ -3,25 +3,26 @@ package com.ecommerce.productservices.model;
 import com.ecommerce.productservices.validation.IsPresentAndValid;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 public class UpdateProductRequest {
     private Long id;
     @IsPresentAndValid(message="Product name should not be blank.")
     private String productName;
-    @IsPresentAndValid(message="Product price should not be blank.")
+    @NotNull(message="Product price should not be blank.")
     private Double productPrice;
-    @IsPresentAndValid(message="Product isActive should not be blank.")
-    private boolean isActive;
-    private boolean isAvailable;
+    @NotNull(message="Product isActive should not be blank.")
+    private Boolean isActive;
+    private Boolean isAvailable;
     private LocalDateTime createdAt;
-    @IsPresentAndValid(message="Category name should not be blank.")
+    @NotNull(message="Category name should not be blank.")
     private Long categoryId;
 
     public UpdateProductRequest() {
     }
 
-    public UpdateProductRequest(Long id, String productName, Double productPrice, boolean isActive, boolean isAvailable, LocalDateTime createdAt, Long categoryId) {
+    public UpdateProductRequest(Long id, String productName, Double productPrice, Boolean isActive, Boolean isAvailable, LocalDateTime createdAt, Long categoryId) {
         this.id = id;
         this.productName = productName;
         this.productPrice = productPrice;
@@ -55,19 +56,19 @@ public class UpdateProductRequest {
         this.productPrice = productPrice;
     }
 
-    public boolean getIsActive() {
+    public Boolean getIsActive() {
         return isActive;
     }
 
-    public void setIsActive(boolean active) {
+    public void setIsActive(Boolean active) {
         isActive = active;
     }
 
-    public boolean getIsAvailable() {
+    public Boolean getIsAvailable() {
         return isAvailable;
     }
 
-    public void setIsAvailable(boolean available) {
+    public void setIsAvailable(Boolean available) {
         isAvailable = available;
     }
 

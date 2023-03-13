@@ -7,6 +7,7 @@ import com.ecommerce.productservices.dto.ProductDTO;
 import com.ecommerce.productservices.exception.JsonParameterNotValidException;
 import com.ecommerce.productservices.exception.ProductNotFoundException;
 import com.ecommerce.productservices.model.AddProductRequest;
+import com.ecommerce.productservices.model.PatchProductRequest;
 import com.ecommerce.productservices.model.Product;
 import com.ecommerce.productservices.model.UpdateProductRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,9 +43,6 @@ public class ProductServiceImpl implements ProductService{
                 ,productDTO.getCreatedAt()
                 ,productDTO.getCategoryDTO().getCategoryName());
     }
-
-
-
 
     @Override
     public List<Product> listProduct() {
@@ -99,7 +97,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public Product updateProductByPatch(UpdateProductRequest updateProductRequest) {
+    public Product updateProductByPatch(PatchProductRequest updateProductRequest) {
         if (updateProductRequest.getId() != null) {
             Optional<ProductDTO> optionalProductDTO = productDAO.findById(updateProductRequest.getId());
             ProductDTO productDTO = unwrapProductDTO(optionalProductDTO, updateProductRequest.getId());
@@ -110,10 +108,10 @@ public class ProductServiceImpl implements ProductService{
             if (updateProductRequest.getProductPrice() != null) {
                 productDTO.setProductPrice(updateProductRequest.getProductPrice());
             }
-            if (updateProductRequest.getIsActive() != productDTO.isActive()) {
+            if (updateProductRequest.getIsActive() != null && updateProductRequest.getIsActive() != productDTO.isActive()) {
                 productDTO.setActive(updateProductRequest.getIsActive());
             }
-            if (updateProductRequest.getIsAvailable() != productDTO.isAvailable()) {
+            if (updateProductRequest.getIsAvailable() != null && updateProductRequest.getIsAvailable() != productDTO.isAvailable()) {
                 productDTO.setAvailable(updateProductRequest.getIsAvailable());
             }
             if (updateProductRequest.getCategoryId() != null) {
@@ -133,6 +131,7 @@ public class ProductServiceImpl implements ProductService{
             throw new JsonParameterNotValidException("id");
         }
     }
+
 
     @Override
     public void deleteProduct(Long id) {
