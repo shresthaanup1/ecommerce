@@ -10,11 +10,16 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @AllArgsConstructor
@@ -34,13 +39,13 @@ public class CustomAuthenticationManager implements AuthenticationManager {
             throw new UserDetailsNotFoundException(authentication.getPrincipal().toString());
         }
 
-        //System.out.println(customFeignClient.getUserLoginByUsername(authentication.getPrincipal().toString()).getPassword());
-
-
         if (!bCryptPasswordEncoder.matches(authentication.getCredentials().toString(), userFromDb.getPassword())) {
             throw new BadCredentialsException("You provided an incorrect password.");
         }
 
-        return new UsernamePasswordAuthenticationToken(authentication.getName(), userFromDb.getPassword());
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_"+userFromDb.getRoleName().toUpperCase()));
+
+        return new UsernamePasswordAuthenticationToken(authentication.getName(), userFromDb.getPassword(),authorities);
     }
 }
