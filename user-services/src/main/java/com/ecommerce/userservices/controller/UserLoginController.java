@@ -4,6 +4,7 @@ import com.ecommerce.userservices.model.AddUserLoginRequest;
 import com.ecommerce.userservices.model.UpdateUserLoginRequest;
 import com.ecommerce.userservices.model.UserLogin;
 import com.ecommerce.userservices.service.UserloginService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/user")
+@Tag(name="User Login",description="Details about users' login information")
 public class UserLoginController {
     @Autowired
     private UserloginService userloginService;
