@@ -4,6 +4,7 @@ import com.ecommerce.userservices.model.AddUserDetailsRequest;
 import com.ecommerce.userservices.model.UpdateUserDetailsRequest;
 import com.ecommerce.userservices.model.UserDetails;
 import com.ecommerce.userservices.service.UserDetailsService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/user")
+@Tag(name="User Details",description="Details about users")
 public class UserDetailsController {
         @Autowired
         private UserDetailsService userDetailsService;
