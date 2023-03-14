@@ -33,6 +33,17 @@ public class JWTUtility {
         return user;
     }
 
+    public String getAuthorityFromJwtToken(String token) {
+        List<String> claims = new ArrayList<>();
+        claims = JWT.require(Algorithm.HMAC512(SecurityConstants.SECRET_KEY))
+                .build()
+                .verify(token)
+                .getClaim("authorities").asList(String.class);
+        //System.out.println(claims.get(0));
+
+        return claims.get(0);
+    }
+
     public boolean validateJwtToken(String token) {
         try {
             JWT.require(Algorithm.HMAC512(SecurityConstants.SECRET_KEY))
