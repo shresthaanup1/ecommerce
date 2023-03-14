@@ -62,17 +62,11 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             //String user = restTemplate.exchange("http://localhost:9897/auth/getUserFromToken", HttpMethod.GET,entity, String.class).getBody();
 
             UserLogin user = customFeignClient.getUserFromToken(header);
-            System.out.println(user);
+            String userAuth = customFeignClient.getAuthorityFromToken(header);
 
             List<GrantedAuthority> authorities = new ArrayList<>();
-
-            authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRoleName().toUpperCase()));
-
-//            if(user.equals("admin")) {
-//                authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-//            }else if (user.equals("user")){
-//                authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-//            }
+            //authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRoleName().toUpperCase()));
+            authorities.add(new SimpleGrantedAuthority(userAuth));
 
             Authentication authentication = new UsernamePasswordAuthenticationToken(user.getUserName(), null, authorities);
             SecurityContextHolder.getContext().setAuthentication(authentication);

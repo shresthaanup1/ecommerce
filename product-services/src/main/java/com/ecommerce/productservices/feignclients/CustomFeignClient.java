@@ -13,4 +13,7 @@ public interface CustomFeignClient {
 
     @GetMapping("/auth/validateToken")
     public ResponseEntity<?> getUser(@RequestHeader(value ="Authorization", required = false) String authHeader);
+
+    @GetMapping("/auth/getAuthorityFromToken")
+    public String getAuthorityFromToken(@RequestHeader(value ="Authorization", required=false) String authHeader);
 }

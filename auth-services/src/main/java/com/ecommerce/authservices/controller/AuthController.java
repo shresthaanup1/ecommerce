@@ -85,6 +85,28 @@ public class AuthController {
         }
     }
 
+    @GetMapping("/getAuthorityFromToken")
+    public String getAuthorityFromToken(@RequestHeader(value ="Authorization", required=false) String authHeader) {
+        if (authHeader != null) {
+            String jwtToken = authHeader.substring(7);
+            //first try to validate token if token is valid then only get username from token
+            try{
+                jwtUtility.validateJwtToken(jwtToken);
+            }catch (TokenExpiredException e) {
+                throw new TokenExpiredException("Token expired", Instant.now());
+            } catch (JWTVerificationException e) {
+                throw new JWTVerificationException("Invalid token");
+            }
+
+            return jwtUtility.getAuthorityFromJwtToken(jwtToken);
+        }else {
+            throw new AuthorizationHeaderNotFoundException();
+        }
+    }
+
+
+
+
     @GetMapping("/validateToken")
     public ResponseEntity<?> getUser(@RequestHeader(value ="Authorization", required = false) String authHeader) {
         if (authHeader != null) {
