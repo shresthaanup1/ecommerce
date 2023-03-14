@@ -91,7 +91,7 @@ public class CategoryController {
         return new ResponseEntity<>(categoryService.updateCategory(updateCategoryRequest), HttpStatus.OK);
     }
 
-    @Operation(summary="Updates existing category",description = "Updates the existing category based on id and fields provided for update. This will only update those fields which are provided in the request body")
+    @Operation(summary="Updates existing category",description = "Updates the existing category based on id and fields provided for update. This will only update those fields which are provided in the request body",security = { @SecurityRequirement(name = "bearer-key")})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "404", description = "A category with the specified ID was not found.", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
