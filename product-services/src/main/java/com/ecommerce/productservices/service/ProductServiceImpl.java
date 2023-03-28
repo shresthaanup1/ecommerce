@@ -34,7 +34,8 @@ public class ProductServiceImpl implements ProductService{
                 , addProductRequest.isAvailable()
                 , LocalDateTime.now()
                 , categoryDTO);
-        productDAO.save(productDTO);
+        productDTO = productDAO.save(productDTO);
+        //productDAO.save(productDTO);
         return new Product(productDTO.getId()
                 ,productDTO.getProductName()
                 ,productDTO.getProductPrice()

@@ -1,4 +1,4 @@
-package com.ecommerce.productservices;
+package com.ecommerce.productservices.service;
 
 import com.ecommerce.productservices.dao.CategoryDAO;
 import com.ecommerce.productservices.dto.CategoryDTO;
