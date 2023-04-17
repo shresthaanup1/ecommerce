@@ -11,8 +11,8 @@ import com.ecommerce.authservices.model.Roles;
 import com.ecommerce.authservices.model.UserLogin;
 import com.ecommerce.authservices.security.manager.CustomAuthenticationManager;
 import com.ecommerce.authservices.model.LoginRequest;
-import com.ecommerce.authservices.user.User;
-import com.ecommerce.authservices.user.UserService;
+//import com.ecommerce.authservices.user.User;
+//import com.ecommerce.authservices.user.UserService;
 import com.ecommerce.authservices.utilities.JWTUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,8 +37,8 @@ public class AuthController {
     @Autowired
     private JWTUtility jwtUtility;
 
-    @Autowired
-    private UserService userService;
+    //@Autowired
+   // private UserService userService;
     @Autowired
     private CustomFeignClient customFeignClient;
 
