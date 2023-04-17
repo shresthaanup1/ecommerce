@@ -1,12 +1,14 @@
 version: "3.9"
 services:
   eureka:
+    mem_limit: 100MB
     build:
       context: ./eureka-server/
       dockerfile: Dockerfile
     ports:
       - "9090:9090"
   api-gateway:
+    mem_limit: 100MB
     build:
       context: ./api-gateway/
       dockerfile: Dockerfile
@@ -15,26 +17,30 @@ services:
     depends_on:
       - eureka
   auth-service:
+    mem_limit: 300MB
     build:
       context: ./auth-services/
       dockerfile: Dockerfile
     depends_on:
       - eureka
   user-service:
+    mem_limit: 300MB
     build:
       context: ./user-services/
       dockerfile: Dockerfile
     depends_on:
       - eureka
       - db
-#  product-service:
-#    build:
-#      context: ./product-services/
-#      dockerfile: Dockerfile
-#    depends_on:
-#      - eureka
-#      - db
+  product-service:
+    mem_limit: 300MB
+    build:
+      context: ./product-services/
+      dockerfile: Dockerfile
+    depends_on:
+      - eureka
+      - db
   db:
+    mem_limit: 300MB
     image: mysql:5.7
     restart: always
     environment:
@@ -48,9 +54,9 @@ services:
     ports:
       # <Port exposed> : <MySQL Port running inside container>
       - '3307:3306'
-    expose:
-      # Opens port 3306 on the container
-      - '3306'
+#    expose:
+#      # Opens port 3306 on the container
+#      - '3306'
       # Where our data will be persisted
 #    volumes:
 #      - my-db:/var/lib/mysql

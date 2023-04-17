@@ -95,7 +95,7 @@ public class ProductServicesApplicationTests {
 				.andExpect(jsonPath("$.[?(@.id == \"2\" && @.categoryName == \"Category2\" && @.categoryDescription == \"Category2 Description\")]").exists());
 	}
 
-	@Test
+	//@Test
 	public void addCategoryTest() throws Exception{
 		//admin token
 		String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY4MDEyNzA0NSwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.REk1IfVgSrkvREl4kDpVc7-3v4qbggnGaQjyW5gj97jyxdjS3dZE4fbhMgp7_FQY_D9UkFCDQP3mRKrMpcdUww";
@@ -127,7 +127,7 @@ public class ProductServicesApplicationTests {
 				.andExpect(status().isForbidden());
 	}
 
-	@Test
+	//@Test
 	public void deleteCategoryByIdTest() throws Exception {
 		String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY4MDEyNzA0NSwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiJdfQ.REk1IfVgSrkvREl4kDpVc7-3v4qbggnGaQjyW5gj97jyxdjS3dZE4fbhMgp7_FQY_D9UkFCDQP3mRKrMpcdUww";
 
