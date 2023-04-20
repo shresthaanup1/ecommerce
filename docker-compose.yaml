@@ -10,7 +10,7 @@ services:
       - "9090:9090"
   api-gateway:
     environment:
-      - spring.profiles.active=dev
+      - spring.profiles.active=test
     mem_limit: 250MB
     build:
       context: ./api-gateway/
@@ -22,7 +22,7 @@ services:
       - eureka
   auth-service:
     environment:
-      - spring.profiles.active=dev
+      - spring.profiles.active=test
     mem_limit: 300MB
     build:
       context: ./auth-services/
@@ -32,7 +32,7 @@ services:
       - eureka
   user-service:
     environment:
-      - spring.profiles.active=dev
+      - spring.profiles.active=test
     mem_limit: 300MB
     build:
       context: ./user-services/
@@ -43,7 +43,7 @@ services:
       - db
   product-service:
     environment:
-      - spring.profiles.active=dev
+      - spring.profiles.active=test
     mem_limit: 300MB
     build:
       context: ./product-services/
