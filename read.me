@@ -1,1 +1,11 @@
 This is a spring boot e-commerce application.
+
+## Bring down all docker containers
+```
+DOCKER_HOST="tcp://192.168.0.5:2375" docker-compose down
+```
+
+## Re-build and deploy all docker containers
+```
+DOCKER_HOST="tcp://192.168.0.5:2375" docker-compose up --build -d
+```

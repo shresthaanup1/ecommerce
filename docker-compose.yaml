@@ -1,41 +1,54 @@
 version: "3.9"
 services:
   eureka:
-    mem_limit: 100MB
+    mem_limit: 250MB
     build:
       context: ./eureka-server/
       dockerfile: Dockerfile
+      target: deploy
     ports:
       - "9090:9090"
   api-gateway:
-    mem_limit: 100MB
+    environment:
+      - spring.profiles.active=dev
+    mem_limit: 250MB
     build:
       context: ./api-gateway/
       dockerfile: Dockerfile
+      target: deploy
     ports:
       - "9999:9999"
     depends_on:
       - eureka
   auth-service:
+    environment:
+      - spring.profiles.active=dev
     mem_limit: 300MB
     build:
       context: ./auth-services/
       dockerfile: Dockerfile
+      target: deploy
     depends_on:
       - eureka
   user-service:
+    environment:
+      - spring.profiles.active=dev
     mem_limit: 300MB
     build:
       context: ./user-services/
       dockerfile: Dockerfile
+      target: deploy
     depends_on:
       - eureka
       - db
   product-service:
+    environment:
+      - spring.profiles.active=dev
     mem_limit: 300MB
     build:
       context: ./product-services/
       dockerfile: Dockerfile
+      target: deploy
     depends_on:
       - eureka
       - db
@@ -52,11 +65,10 @@ services:
       # Password for root access
       MYSQL_ROOT_PASSWORD: 'root1234%'
     ports:
-      # <Port exposed> : <MySQL Port running inside container>
       - '3307:3306'
+    volumes:
+      - /home/nirmala/ecommerce-mysql-data:/var/lib/mysql
 #    expose:
 #      # Opens port 3306 on the container
 #      - '3306'
       # Where our data will be persisted
-#    volumes:
-#      - my-db:/var/lib/mysql
