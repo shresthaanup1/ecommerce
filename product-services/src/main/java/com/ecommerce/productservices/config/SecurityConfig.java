@@ -5,6 +5,7 @@ import com.ecommerce.productservices.security.filter.ExceptionHandlerFilter;
 import com.ecommerce.productservices.security.filter.JWTAuthorizationFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -16,14 +17,17 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
-@AllArgsConstructor
 public class SecurityConfig {
 
-
+    @Autowired
     private APIConfig apiConfig;
+
+    @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
     private CustomFeignClient customFeignClient;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors();
@@ -41,7 +45,7 @@ public class SecurityConfig {
                 .addFilterBefore(new ExceptionHandlerFilter(), UsernamePasswordAuthenticationFilter.class)
                 //.addFilter(authenticationFilter)
                 //.addFilterAfter(new JWTAuthorizationFilter(), AuthenticationFilter.class)
-                .addFilterAfter(new JWTAuthorizationFilter(restTemplate,apiConfig,customFeignClient), UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(new JWTAuthorizationFilter(restTemplate, apiConfig, customFeignClient), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         return http.build();
     }

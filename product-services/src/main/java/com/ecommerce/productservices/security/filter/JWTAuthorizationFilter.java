@@ -6,6 +6,7 @@ import com.ecommerce.productservices.config.AppConfig;
 import com.ecommerce.productservices.feignclients.CustomFeignClient;
 import com.ecommerce.productservices.model.UserLogin;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@Slf4j
 @AllArgsConstructor
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
     //@Autowired
@@ -38,10 +40,12 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+        log.info("ApiConfig: {}", apiConfig.getAuthBaseURL());
         String header = request.getHeader("Authorization");// Bearer JWT token
 
         //if client is registering for the first time we do not have JWT token so no need to verify
         if (header == null || !header.startsWith("Bearer ")) {
+            log.error("Request received without Authorization header: {}", request);
             filterChain.doFilter(request, response);
             return;
         }
@@ -53,26 +57,29 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         HttpEntity<String> entity = new HttpEntity<String>(httpHeaders);
 
         try {
-            String output = restTemplate.exchange("http://localhost:9897/auth/validateToken", HttpMethod.GET, entity, String.class).getBody();
-           // System.out.println("output:" + output);
+            String output = restTemplate.exchange(apiConfig.getAuthBaseURL(), HttpMethod.GET, entity, String.class).getBody();
+            // System.out.println("output:" + output);
 
            //call to verify the token
-            if(output.equals("Token is fine.")){
-            //get user from token
-            //String user = restTemplate.exchange("http://localhost:9897/auth/getUserFromToken", HttpMethod.GET,entity, String.class).getBody();
+            if(output.equals("Token is fine.")) {
+                //get user from token
+                //String user = restTemplate.exchange("http://localhost:9897/auth/getUserFromToken", HttpMethod.GET,entity, String.class).getBody();
 
-            UserLogin user = customFeignClient.getUserFromToken(header);
-            String userAuth = customFeignClient.getAuthorityFromToken(header);
+                UserLogin user = customFeignClient.getUserFromToken(header);
+                String userAuth = customFeignClient.getAuthorityFromToken(header);
 
-            List<GrantedAuthority> authorities = new ArrayList<>();
-            //authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRoleName().toUpperCase()));
-            authorities.add(new SimpleGrantedAuthority(userAuth));
+                List<GrantedAuthority> authorities = new ArrayList<>();
+                //authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRoleName().toUpperCase()));
+                authorities.add(new SimpleGrantedAuthority(userAuth));
 
-            Authentication authentication = new UsernamePasswordAuthenticationToken(user.getUserName(), null, authorities);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-        }
-        }catch(RuntimeException e){
-               throw new RuntimeException("Sorry! Invalid token");
+                Authentication authentication = new UsernamePasswordAuthenticationToken(user.getUserName(), null, authorities);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            } else {
+                log.error("Token isn't fine");
+            }
+        } catch (RuntimeException e) {
+            log.error("Sorry! Invalid token. Ran into exception: {}", e.getMessage());
+            throw e;
         }
         filterChain.doFilter(request, response);
 

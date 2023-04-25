@@ -10,7 +10,7 @@ services:
       - "9090:9090"
   api-gateway:
     environment:
-      - spring.profiles.active=test
+      - spring.profiles.active=docker
     mem_limit: 250MB
     build:
       context: ./api-gateway/
@@ -22,7 +22,7 @@ services:
       - eureka
   auth-service:
     environment:
-      - spring.profiles.active=test
+      - spring.profiles.active=docker
     mem_limit: 300MB
     build:
       context: ./auth-services/
@@ -32,8 +32,8 @@ services:
       - eureka
   user-service:
     environment:
-      - spring.profiles.active=test
-    mem_limit: 300MB
+      - spring.profiles.active=docker
+    mem_limit: 1GB
     build:
       context: ./user-services/
       dockerfile: Dockerfile
@@ -43,8 +43,8 @@ services:
       - db
   product-service:
     environment:
-      - spring.profiles.active=test
-    mem_limit: 300MB
+      - spring.profiles.active=docker
+    mem_limit: 1GB
     build:
       context: ./product-services/
       dockerfile: Dockerfile
