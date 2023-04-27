@@ -1,6 +1,7 @@
 package com.ecommerce.userservices.controller;
 
 import com.ecommerce.userservices.model.AddUserLoginRequest;
+import com.ecommerce.userservices.model.SignUpRequest;
 import com.ecommerce.userservices.model.UpdateUserLoginRequest;
 import com.ecommerce.userservices.model.UserLogin;
 import com.ecommerce.userservices.service.UserloginService;
@@ -50,5 +51,10 @@ public class UserLoginController {
     @GetMapping(value ="/login/{userName}")
     public ResponseEntity<UserLogin> getUserLoginByUsername(@PathVariable String userName){
         return new ResponseEntity<>(userloginService.getUserLoginByUserName(userName), HttpStatus.OK);
+    }
+
+    @PostMapping(value ="/register")
+    public ResponseEntity<SignUpRequest> registerUser(@RequestBody SignUpRequest signUpRequest){
+        return new ResponseEntity<>(userloginService.registerUser(signUpRequest), HttpStatus.OK);
     }
 }

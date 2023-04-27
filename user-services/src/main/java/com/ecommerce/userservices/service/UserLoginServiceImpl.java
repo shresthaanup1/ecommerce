@@ -10,6 +10,7 @@ import com.ecommerce.userservices.exception.JsonParameterNotValidException;
 import com.ecommerce.userservices.exception.RolesNotFoundException;
 import com.ecommerce.userservices.exception.UserDetailsNotFoundException;
 import com.ecommerce.userservices.model.AddUserLoginRequest;
+import com.ecommerce.userservices.model.SignUpRequest;
 import com.ecommerce.userservices.model.UpdateUserLoginRequest;
 import com.ecommerce.userservices.model.UserLogin;
 import lombok.AllArgsConstructor;
@@ -216,6 +217,38 @@ public class UserLoginServiceImpl implements UserloginService {
                     userLoginDTO.getRolesDTO().getRoleName(),
                     userLoginDTO.getUserDetailsDTO().getId());
             return userLogin;
+        }
+        return null;
+    }
+
+    @Override
+    public SignUpRequest registerUser(SignUpRequest signUpRequest) {
+        /* Role user with id 2 in role table is a must */
+        Optional<RolesDTO> optionalRolesDTO = rolesDAO.findById(2L);
+        RolesDTO rolesDTO = RolesServiceImpl.unwrapRolesDTO(optionalRolesDTO, 2L);
+        UserDetailsDTO userDetailsDTO = new UserDetailsDTO(UUID.randomUUID().toString(),
+                signUpRequest.getFirstname(),
+                signUpRequest.getMiddlename(),
+                signUpRequest.getLastname(),
+                signUpRequest.getDob(),
+                signUpRequest.getAddress());
+        userDetailsDTO = userDetailsDAO.save(userDetailsDTO);
+        /* if some error with user details do not insert in login table as well */
+
+        Optional<UserDetailsDTO> optionalUserDetailsDTO = userDetailsDAO.findById(userDetailsDTO.getId());
+        if (optionalUserDetailsDTO.isPresent()) {
+            String password = bCryptPasswordEncoder.encode(signUpRequest.getPassword());
+            UserLoginDTO userLoginDTO = new UserLoginDTO(signUpRequest.getUsername(),
+                    password,
+                    signUpRequest.getEmail(),
+                    LocalDateTime.now(),
+                    LocalDateTime.now(),
+                    true,
+                    rolesDTO,
+                    userDetailsDTO);
+            userLoginDTO = userLoginDAO.save(userLoginDTO);
+        } else {
+            throw new UserDetailsNotFoundException(userDetailsDTO.getId());
         }
         return null;
     }

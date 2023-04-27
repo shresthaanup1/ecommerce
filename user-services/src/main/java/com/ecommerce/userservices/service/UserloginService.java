@@ -2,6 +2,7 @@ package com.ecommerce.userservices.service;
 
 
 import com.ecommerce.userservices.model.AddUserLoginRequest;
+import com.ecommerce.userservices.model.SignUpRequest;
 import com.ecommerce.userservices.model.UpdateRolesRequest;
 import com.ecommerce.userservices.model.UpdateUserLoginRequest;
 import com.ecommerce.userservices.model.UserLogin;
@@ -22,4 +23,6 @@ public interface UserloginService {
     UserLogin patchUserLogin(UpdateUserLoginRequest updateuserLoginRequest);
 
     UserLogin getUserLoginByUserName(String userName);
+
+    SignUpRequest registerUser(SignUpRequest signUpRequest);
 }

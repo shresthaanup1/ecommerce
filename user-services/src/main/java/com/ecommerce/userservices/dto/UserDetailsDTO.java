@@ -8,8 +8,6 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 @Entity
-@NoArgsConstructor
-@RequiredArgsConstructor
 @Getter
 @Setter
 @Table(schema ="ecommerce", name = "user_details")
@@ -23,29 +21,30 @@ public class UserDetailsDTO {
     @NonNull
     @Column(name = "first_name")
     private String firstName;
-    @NonNull
+
     @Column(name = "middle_name")
     private String middleName;
     @NonNull
     @Column(name = "last_name")
     private String lastName;
-    @NonNull
+
     @Column(name = "date_of_birth")
     @JsonFormat(pattern = "YYYY-MM-DD")
     private LocalDate dateofBirth;
-    @NonNull
+
     @Column(name ="address")
     private String address;
 
    @OneToOne(mappedBy = "userDetailsDTO",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
    private UserLoginDTO userLoginDTO;
 
-/*    public UserDetailsDTO(String userId, String firstName, String middleName, String lastName, LocalDate dateofBirth, String address) {
+   public UserDetailsDTO () { }
+   public UserDetailsDTO(String userId, String firstName, String middleName, String lastName, LocalDate dateofBirth, String address) {
         this.userId = userId;
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
         this.dateofBirth = dateofBirth;
         this.address = address;
-    }*/
+    }
 }
